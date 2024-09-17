@@ -15,25 +15,29 @@
     <nav class="navbar">
       <ul class="navbar__menu">
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="home"></i><span>Home</span></a>
+          <a href="#" class="navbar__link"><i data-feather="pie-chart"></i><span>Dashboard</span></a>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="plus-square"></i><span>Task</span></a>
+          <a href="#" class="navbar__link"><i data-feather="plus-square"></i><span>Ajouter</span></a>
         </li>
         <li class="navbar__item">
           <a href="#" class="navbar__link"><i data-feather="list"></i><span>ToDo</span></a>
         </li>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="info"></i><span>About</span></a>
+          <a href="#" class="navbar__link"><i data-feather="trash-2"></i><span>Corbeille</span></a>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="tool"></i><span>Settings</span></a>
+          <a href="#" class="navbar__link"><i data-feather="tool"></i><span>Réglages</span></a>
+        </li>
+        <li class="navbar__item navbar__item--bottom" style="bottom: 10%!important">
+          <a href="#" class="navbar__link"><i data-feather="sun"></i><span>Logout</span></a>
         </li>
       </ul>
     </nav>
 
-    <div class="container">
+
+        <!--
         <h1 class="containerTitle">ToDo List</h1>
         <form class="formTask" id="taskForm" action="/tasks/create" method="post">
             <div class="formGroup">
@@ -41,9 +45,49 @@
                 <textarea name="description" placeholder="Description (optionel)"></textarea>
                 <label for="due_date">Date d'échéance :</label>
                 <input type="date" name="due_date" id="due_date" required>
-                <button type="submit">Ajouter la tâche</button>
+                <button type="submit" class="button1">Ajouter la tâche</button>
             </div>
         </form>
+        -->
+
+        <div class="createTaskForm">
+          <header>
+            <h1>Créer une tache</h1>
+            <p>Remplir toutes les infos demandé</p>
+          </header>
+          <form class="formTask" id="taskForm" action="/tasks/create" method="post">
+            <div class="input-section createTitle-section">
+              <input class="taskFormTitle" type="text" name="title" placeholder="TITRE DE VOTRE TÂCHE*" autocomplete="off" required/>
+              <div class="animated-button">
+                  <span class="icon-paper-plane" style="cursor: not-allowed"><i data-feather="lock"></i></span>
+                  <span class="next-button taskFormTitle"><i data-feather="unlock"></i></span>
+              </div>
+            </div>
+            <div class="input-section createDesc-section folded">
+              <input class="taskFormDesc" type="text" name="description" placeholder="DÉSCRIPTION"/>
+              <div class="animated-button">
+                  <span class="icon-lock" style="cursor: not-allowed"><i data-feather="lock"></i></span>
+                  <span class="next-button taskFormDesc"><i data-feather="unlock"></i></span>
+              </div>
+            </div>
+            <div class="input-section createDueDate-section folded">
+              <input class="taskFormDueDate" type="date" name="due_date" placeholder="DATE D'ÉCHÉANCE"/>
+              <div class="animated-button">
+                  <span class="icon-repeat-lock" style="cursor: not-allowed"><i data-feather="lock"></i></span>
+                   <span class="next-button taskFormDueDate">
+                       <button type="submit" style="background: none;color: inherit;border: none;padding: 0;font: inherit;cursor: pointer;outline: inherit;">
+                           <i data-feather="unlock"></i>
+                       </button>
+                   </span>
+              </div>
+            </div>
+            <div class="success">
+              <p>TÂCHE CRÉÉE</p>
+            </div>
+          </form>
+        </div>
+
+    <div class="container">
         <ul class="temp" id="taskList">
             {% for task in tasks %}
                 <li id="task-{{ task.id }}">
@@ -51,7 +95,7 @@
                     <p>{{ task.description }}</p>
                     <p class="due_date"><strong>Date d'échéance :</strong> {{ task.due_date.strftime('%d/%m/%Y') }}</p>
                     <span class="creation_date"><strong>Date d'ajout :</strong> {{ task.creation_date.strftime('%d/%m/%Y %H:%M:%S') }}</span>
-                    <button type="button" class="deleteButton" data-id="{{ task.id }}">Supprimer</button>
+                    <button class="buttonError" type="button" class="deleteButton" data-id="{{ task.id }}">Supprimer</button>
                 </li>
             {% endfor %}
         </ul>
@@ -63,6 +107,7 @@
 
 
     <!-- js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../static/js/main.js"></script>
 </body>
 </html>

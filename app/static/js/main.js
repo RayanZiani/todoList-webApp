@@ -116,3 +116,58 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+$(document).ready(function() {
+  // Gestion de l'input title
+  $('.taskFormTitle').on("change keyup paste", function() {
+    if ($(this).val()) {
+      $('.icon-paper-plane').addClass("next");
+    } else {
+      $('.icon-paper-plane').removeClass("next");
+    }
+  });
+
+  // Gestion du hover du bouton next
+  $('.next-button').hover(function() {
+    $(this).css('cursor', 'pointer');
+  });
+
+  // Click sur le bouton title
+  $('.next-button.taskFormTitle').click(function() {
+    console.log("Title button clicked");
+    $('.createTitle-section').addClass("fold-up");
+    $('.createDesc-section').removeClass("folded");
+  });
+
+  // Gestion de l'input Desc
+  $('.taskFormDesc').on("change keyup paste", function() {
+    if ($(this).val()) {
+      $('.icon-lock').addClass("next");
+    } else {
+      $('.icon-lock').removeClass("next");
+    }
+  });
+
+  // Click sur le bouton desc
+  $('.next-button.taskFormDesc').click(function() {
+    console.log("Password button clicked");
+    $('.createDesc-section').addClass("fold-up");
+    $('.createDueDate-section').removeClass("folded");
+  });
+
+  // Gestion de l'input repeat-password
+  $('.taskFormDueDate').on("change keyup paste", function() {
+    if ($(this).val()) {
+      $('.icon-repeat-lock').addClass("next");
+    } else {
+      $('.icon-repeat-lock').removeClass("next");
+    }
+  });
+
+  // Click sur le bouton repeat-password
+  $('.next-button.taskFormDueDate').click(function() {
+    console.log("Repeat password button clicked");
+    $('.createDueDate-section').addClass("fold-up");
+    $('.success').css("marginTop", 0);
+  });
+});

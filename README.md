@@ -93,18 +93,24 @@ These libraries are required to continue the installation.
 
 _Below is all the instructions needed to install and run my project smoothly._
 
-
+1. starting it in a local server
+   ```bash
+   uvicorn app.main:app --reload
+   ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-_Once everything is installed, you can run the project by:_
+_Once everything is installed :_
 
-1. starting it in a local server
+1. if you edit the style.scss you need to compile it to css.
    ```bash
-   uvicorn app.main:app --reload
+   sass app/static/style.scss app/static/style.css
    ```
+
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

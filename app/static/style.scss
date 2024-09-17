@@ -1,12 +1,30 @@
-$color_1: white;
-$font-family_1: "Roboto", sans-serif;
+$white: white;
+$font-family_1: 'roboto', sans-serif;
 $background-color_1: #2b2b2b;
 $background-color_2: white;
 $background-color_3: #28a745;
 $background-color_4: #218838;
+$primary: #406ff3;
+$primary-hover: #4097f3;
+$error: #af0505;
+$error-hover: #df1010;
+$text-blue_1: #6a778e;
+$borderRadius: 10px;
+$spacer: 1rem;
+$linkHeight: $spacer * 3.5;
+$timing: 250ms;
+$transition: $timing ease all;
+
+$input-height: 75px;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+	font-family: $font-family_1;
+}
 
 body {
-	font-family: $font-family_1;
 	background-color: $background-color_1;
 }
 .container {
@@ -41,17 +59,55 @@ textarea {
 	border: 1px solid #ccc;
 	border-radius: 4px;
 }
-button {
-	background-color: $background-color_3;
-	color: $color_1;
-	padding: 10px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+
+.button1 {
+	width: 140px;
+    height: 45px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
 	&:hover {
-		background-color: $background-color_4;
+		background-color: $primary;
+        box-shadow: 0 15px 20px $primary-hover;
+        color: #fff;
+        transform: translateY(-7px);
 	}
 }
+
+.buttonError {
+	width: 140px;
+    height: 45px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+	&:hover {
+		background-color: $error;
+        box-shadow: 0 15px 20px $error-hover;
+        color: #fff;
+        transform: translateY(-7px);
+	}
+}
+
 ul {
 	list-style-type: none;
 	padding: 0;
@@ -61,14 +117,6 @@ ul {
 }
 
 
-
-$borderRadius: 10px;
-$spacer: 1rem;
-$primary: #406ff3;
-$text: #6a778e;
-$linkHeight: $spacer * 3.5;
-$timing: 250ms;
-$transition: $timing ease all;
 
 @mixin gooeyEffect($i) {
   @keyframes gooeyEffect-#{$i} {
@@ -83,11 +131,7 @@ $transition: $timing ease all;
     }
   }
 }
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
-body{
-  background: #eaeef6;
-  font-family: 'Open Sans', sans-serif;
-}
+
 .navbar{
   $ref: &;
   position: fixed;
@@ -105,7 +149,7 @@ body{
     justify-content: center;
     height: $linkHeight;
     width: $spacer * 5.5;
-    color: $text;
+    color: $text-blue_1;
     transition: $transition;
     span{
       position: absolute;
@@ -182,4 +226,170 @@ body{
 
   }
 
+}
+
+.createTaskForm {
+  width: 400px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  top: 15%;
+
+  background: transparent;
+
+  header {
+    position: relative;
+    z-index: 4;
+    background: white;
+    padding: 20px 40px;
+    border-radius: 15px 15px 0 0;
+
+    h1 {
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #333;
+      font-size: 23px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    p {
+      word-spacing: 0px;
+      color: rgb(159, 172, 182);
+      font-size: 17px;
+      margin: 0;
+      margin-top: 5px;
+    }
+  }
+
+  form {
+    position: relative;
+  }
+
+  .input-section {
+    width: 100%;
+    position: absolute;
+    display: flex;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: $input-height;
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0px 0px 100px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in;
+
+    &.folded {
+      width: 95%;
+      margin-top: 10px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      z-index: 1;
+
+      input {
+        background-color: rgb(233, 226, 192);
+      }
+
+      span {
+        background-color: rgb(233, 226, 192);
+      }
+    }
+
+    &.folded + .folded {
+      width: 90%;
+      margin-top: 20px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      z-index: 0;
+
+      input {
+        background-color: rgb(225, 188, 239);
+      }
+
+      span {
+        background-color: rgb(225, 188, 239);
+      }
+    }
+
+    &.fold-up {
+      margin-top: -$input-height;
+    }
+  }
+
+  form input {
+    background: lighten(rgb(243, 243, 251), 5%);
+    color: rgb(143, 143, 214);
+    width: 80%;
+    border: 0;
+    padding: 20px 40px;
+    margin: 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: rgb(143, 143, 214);
+      font-weight: 100;
+    }
+  }
+}
+
+.animated-button {
+  width: 20%;
+  background-color: rgb(212, 212, 255);
+
+  span {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    line-height: $input-height;
+    text-align: center;
+    height: $input-height;
+    transition: all 0.2s ease-in;
+
+    i {
+      font-size: 25px;
+      color: rgb(153, 153, 248);
+    }
+  }
+
+  .next-button {
+    background: transparent;
+    color: rgb(153, 153, 248);
+    font-weight: 100;
+    width: 100%;
+    border: 0;
+  }
+}
+
+.next {
+  margin-top: -$input-height;
+}
+
+.success {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: $input-height;
+  border-radius: 0 0 15px 15px;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: 0 0 100px rgba(0,0,0,0.2);
+  transition: all 0.2s ease-in;
+  background: limegreen;
+  margin-top: -$input-height;
+
+  p {
+    color: white;
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+  }
 }
