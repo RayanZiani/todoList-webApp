@@ -51,3 +51,71 @@
   </ol>
 </details>
 
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+There is many todo list website service and open source one too, but this one is the one you need.
+
+Here's why:
+* It's 100% open-source so you can modify and adapt the code and design to your brand/liking.
+* You can host it on your own machine/server so no need to pay for a subscription online !
+* Everything is documented and will be with the future updates, so don't worry about this.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+### Built With
+
+This section list every framework/libraries used in this project.
+
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+Follow this little guide to complete the installation and learn how to use my open source todo list !
+
+### Prerequisites
+
+These libraries are required to continue the installation.
+
+* python
+  ```sh
+  pip install fastapi
+
+### Installation
+
+_Below is all the instructions needed to install and run my project smoothly._
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+_Once everything is installed, you can run the project by:_
+
+1. starting it in a local server
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[product-screenshot]: images/screenshot_early.png
+[Python-url]: https://www.python.org/
+[JavaScript-url]: https://www.javascript.com/
+
+
+
+

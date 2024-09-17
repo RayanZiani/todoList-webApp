@@ -13,24 +13,29 @@ body {
 	width: 600px;
 	margin: 50px auto;
 	background-color: $background-color_2;
-	padding: 20px;
+	padding: 3%;
 	border-radius: 8px;
 }
-h1 {
+.containerTitle {
 	text-align: center;
 }
-form {
+.formTask {
 	margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.formGroup {
+
 }
 input {
-	width: 100%;
+	width: 95%;
 	padding: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 }
 textarea {
-	width: 100%;
+	width: 95%;
 	padding: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #ccc;

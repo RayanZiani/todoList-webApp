@@ -34,21 +34,27 @@
     </nav>
 
     <div class="container">
-        <h1>ToDo List</h1>
-                <form id="taskForm" action="/tasks/create" method="post">
-            <input type="text" name="title" placeholder="Titre de la tâche" required>
-            <textarea name="description" placeholder="Description"></textarea>
-            <button type="submit">Ajouter la tâche</button>
+        <h1 class="containerTitle">ToDo List</h1>
+        <form class="formTask" id="taskForm" action="/tasks/create" method="post">
+            <div class="formGroup">
+                <input type="text" name="title" placeholder="Titre de la tâche" required>
+                <textarea name="description" placeholder="Description (optionel)"></textarea>
+                <label for="due_date">Date d'échéance :</label>
+                <input type="date" name="due_date" id="due_date" required>
+                <button type="submit">Ajouter la tâche</button>
+            </div>
         </form>
         <ul class="temp" id="taskList">
             {% for task in tasks %}
-                <li>
+                <li id="task-{{ task.id }}">
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.description }}</p>
+                    <p class="due_date"><strong>Date d'échéance :</strong> {{ task.due_date.strftime('%d/%m/%Y') }}</p>
+                    <span class="creation_date"><strong>Date d'ajout :</strong> {{ task.creation_date.strftime('%d/%m/%Y %H:%M:%S') }}</span>
+                    <button type="button" class="deleteButton" data-id="{{ task.id }}">Supprimer</button>
                 </li>
             {% endfor %}
         </ul>
-
     </div>
 
 
