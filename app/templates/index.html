@@ -8,11 +8,55 @@
     <title>ToDo List</title>
     <link rel="stylesheet" href="../static/style.css">
 </head>
+
+<script src="https://unpkg.com/feather-icons"></script>
 <body>
+
+    <nav class="navbar">
+      <ul class="navbar__menu">
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="home"></i><span>Home</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="plus-square"></i><span>Task</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="list"></i><span>ToDo</span></a>
+        </li>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="info"></i><span>About</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="tool"></i><span>Settings</span></a>
+        </li>
+      </ul>
+    </nav>
+
     <div class="container">
         <h1>ToDo List</h1>
-
+                <form id="taskForm" action="/tasks/create" method="post">
+            <input type="text" name="title" placeholder="Titre de la tâche" required>
+            <textarea name="description" placeholder="Description"></textarea>
+            <button type="submit">Ajouter la tâche</button>
+        </form>
+        <ul class="temp" id="taskList">
+            {% for task in tasks %}
+                <li>
+                    <h3>{{ task.title }}</h3>
+                    <p>{{ task.description }}</p>
+                </li>
+            {% endfor %}
+        </ul>
 
     </div>
+
+
+
+    <!-- ____________ JavaScript ____________ -->
+
+
+    <!-- js -->
+    <script src="../static/js/main.js"></script>
 </body>
 </html>
