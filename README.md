@@ -71,7 +71,7 @@ Here's why:
 
 This section list every framework/libraries used in this project.
 
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![Python][Python.org]][Python-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
