@@ -1,25 +1,21 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Request, Form
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from .models import tasks_db, Task
-from .schemas import TaskCreate, TaskResponse
 
 router = APIRouter()
 
-# Route pour obtenir toutes les tâches
-@router.get("/tasks/", response_model=list[TaskResponse])
-async def get_tasks():
-    return tasks_db
+# Configuration de Jinja2 pour utiliser les templates
+templates = Jinja2Templates(directory="app/templates")
 
-# Route pour créer une nouvelle tâche
-@router.post("/tasks/", response_model=TaskResponse)
-async def create_task(task: TaskCreate):
-    new_task = Task(id=len(tasks_db) + 1, title=task.title, description=task.description)
+# Route pour la page web
+@router.get("/", response_class=HTMLResponse)
+async def get_home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request, "tasks": tasks_db})
+
+# Route pour ajouter une nouvelle tâche depuis le formulaire HTML
+@router.post("/tasks/create")
+async def create_task(title: str = Form(...), description: str = Form(None)):
+    new_task = Task(id=len(tasks_db) + 1, title=title, description=description)
     tasks_db.append(new_task)
-    return new_task
-
-# Route pour obtenir une tâche par son ID
-@router.get("/tasks/{task_id}", response_model=TaskResponse)
-async def get_task(task_id: int):
-    task = next((task for task in tasks_db if task.id == task_id), None)
-    if task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return task
+    return templates.TemplateResponse("index.html", {"request": Request, "tasks": tasks_db})
