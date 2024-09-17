@@ -1,10 +1,9 @@
-from typing import List
+from sqlalchemy import Column, Integer, String
+from .database import Base
 
-class Task:
-    def __init__(self, id: int, title: str, description: str = None):
-        self.id = id
-        self.title = title
-        self.description = description
+class Task(Base):
+    __tablename__ = "tasks"
 
-# On crée une liste de tâches en tant que base de données temporaire
-tasks_db: List[Task] = []
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, index=True)
+    description = Column(String, index=True, nullable=True)
