@@ -47,7 +47,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#todo">ToDo</a></li>
   </ol>
 </details>
 
@@ -115,6 +115,13 @@ _Once everything is installed :_
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## ToDo
+
+_TODO (09/17/24) :_
+
+1. finish the new taskForm
+2. Create Todo page
+3. Create Add page
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
