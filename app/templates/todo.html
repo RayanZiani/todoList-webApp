@@ -25,26 +25,37 @@
         <li class="navbar__item">
           <a href="/todo" class="navbar__link"><i data-feather="list"></i><span>ToDo</span></a>
         </li>
-        </li>
         <li class="navbar__item">
           <a href="#" class="navbar__link"><i data-feather="trash-2"></i><span>Corbeille</span></a>
         </li>
         <li class="navbar__item">
           <a href="#" class="navbar__link"><i data-feather="tool"></i><span>Réglages</span></a>
         </li>
-        <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="sun"></i><span>Claire</span></a>
+        <li class="navbar__item navbar__item--bottom" style="bottom: 10%!important">
+          <a href="#" class="navbar__link"><i data-feather="sun"></i><span>Logout</span></a>
         </li>
       </ul>
     </nav>
 
 
+    <div class="container">
+        <ul class="temp" id="taskList">
+            {% for task in tasks %}
+                <li id="task-{{ task.id }}">
+                    <h3>{{ task.title }}</h3>
+                    <p>{{ task.description }}</p>
+                    <p class="due_date"><strong>Date d'échéance :</strong> {{ task.due_date.strftime('%d/%m/%Y') }}</p>
+                    <span class="creation_date"><strong>Date d'ajout :</strong> {{ task.creation_date.strftime('%d/%m/%Y %H:%M:%S') }}</span>
+                    <button class="buttonError deleteButton" type="button" data-id="{{ task.id }}">Supprimer</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
 
 
     <!-- ____________ JavaScript ____________ -->
 
-    <!-- gsap -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 
     <!-- js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

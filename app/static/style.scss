@@ -1,14 +1,17 @@
-$white: white;
+$white: #d5d5d5;
 $font-family_1: 'roboto', sans-serif;
+$font-family_2: 'Monoton', cursive;
 $background-color_1: #2b2b2b;
 $background-color_2: white;
 $background-color_3: #28a745;
 $background-color_4: #218838;
-$primary: #406ff3;
-$primary-hover: #4097f3;
+$background-color_5: rgba(0, 0, 0, 0.8);
+$primary: rgba(71, 114, 234, 0.81);
+$primary-hover: #406ff3;
 $error: #af0505;
 $error-hover: #df1010;
 $text-blue_1: #6a778e;
+$text-gray_1: #333333;
 $borderRadius: 10px;
 $spacer: 1rem;
 $linkHeight: $spacer * 3.5;
@@ -17,7 +20,7 @@ $transition: $timing ease all;
 
 $input-height: 75px;
 
-
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 * {
@@ -27,6 +30,157 @@ $input-height: 75px;
 body {
 	background-color: $background-color_1;
 }
+
+/* top logo center */
+/* top logo center */
+.logoHeader a {
+  text-decoration: none;
+}
+.logoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(30px);
+  height: 40px;
+  width: 100%;
+  cursor: pointer;
+  &__style{
+      text-align: center;
+      color: $text-blue_1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 20px auto;
+      width: 75px;
+      height: 75px;
+      background: white;
+      border-radius: 75px;
+      font-family: $font-family_1;
+      font-size: 16px;
+      font-weight: 1000;
+      letter-spacing: 2px;
+      transition: 1s box-shadow, .2s color;
+      &:hover {
+          box-shadow: 0 5px 35px 0 rgba(0,0,0,.1);
+          color: $text-gray_1;
+          transition: .2s color;
+          &::before {
+              display: block;
+              content: '';
+              position: absolute;
+              width: 75px;
+              height: 75px;
+              background: $primary;
+              border-radius: 75px;
+              z-index: -1;
+              animation: 1s clockwise infinite;
+          }
+          &::after {
+              display: block;
+              content: '';
+              position: absolute;
+              width: 75px;
+              height: 75px;
+              background: $primary;
+              border-radius: 75px;
+              z-index: -1;
+              animation: 1s clockwise infinite;
+
+          }
+          &:after {
+              background: $primary;
+              animation: 2s counterclockwise infinite;
+          }
+      }
+  }
+}
+
+
+
+@keyframes clockwise {
+	0% {
+		top: -5px;
+		left: 0;
+	}
+	12% {
+		top: -2px;
+		left: 2px;
+	}
+	25% {
+		top: 0;
+		left: 5px;
+	}
+	37% {
+		top: 2px;
+		left: 2px;
+	}
+	50% {
+		top: 5px;
+		left: 0;
+	}
+	62% {
+		top: 2px;
+		left: -2px;
+	}
+	75% {
+		top: 0;
+		left: -5px;
+	}
+	87% {
+		top: -2px;
+		left: -2px;
+	}
+	100% {
+		top: -5px;
+		left: 0;
+	}
+}
+@keyframes counterclockwise {
+	0% {
+		top: -5px;
+		right: 0;
+	}
+	12% {
+		top: -2px;
+		right: 2px;
+	}
+	25% {
+		top: 0;
+		right: 5px;
+	}
+	37% {
+		top: 2px;
+		right: 2px;
+	}
+	50% {
+		top: 5px;
+		right: 0;
+	}
+	62% {
+		top: 2px;
+		right: -2px;
+	}
+	75% {
+		top: 0;
+		right: -5px;
+	}
+	87% {
+		top: -2px;
+		right: -2px;
+	}
+	100% {
+		top: -5px;
+		right: 0;
+	}
+}
+
+
+
+
+
+
+
 .container {
 	width: 600px;
 	margin: 50px auto;
@@ -240,7 +394,7 @@ ul {
   header {
     position: relative;
     z-index: 4;
-    background: white;
+    background: $white;
     padding: 20px 40px;
     border-radius: 15px 15px 0 0;
 
@@ -361,6 +515,8 @@ ul {
     font-weight: 100;
     width: 100%;
     border: 0;
+    position: relative;
+    z-index: 1000;
   }
 }
 
@@ -385,7 +541,7 @@ ul {
   margin-top: -$input-height;
 
   p {
-    color: white;
+    color: $white;
     font-weight: 900;
     letter-spacing: 2px;
     font-size: 18px;
@@ -393,3 +549,6 @@ ul {
     text-align: center;
   }
 }
+
+
+

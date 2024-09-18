@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<script src="https://unpkg.com/feather-icons"></script>
+<body>
+    <div class="logoHeader">
+        <a href="/" ><div class="logoHeader__style">ToDo List</div></a>
+    </div>
+    <nav class="navbar">
+      <ul class="navbar__menu">
+        <li class="navbar__item">
+          <a href="/" class="navbar__link"><i data-feather="pie-chart"></i><span>Dashboard</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="/add" class="navbar__link"><i data-feather="plus-square"></i><span>Ajouter</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="/todo" class="navbar__link"><i data-feather="list"></i><span>ToDo</span></a>
+        </li>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="trash-2"></i><span>Corbeille</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="tool"></i><span>Réglages</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><i data-feather="sun"></i><span>Claire</span></a>
+        </li>
+      </ul>
+    </nav>
+
+
+
+        <div class="createTaskForm">
+          <header>
+            <h1>Créer une tache</h1>
+            <p>Remplir toutes les infos demandé</p>
+          </header>
+          <form class="formTask" id="taskForm" action="/tasks/create" method="post">
+            <div class="input-section createTitle-section">
+              <input class="taskFormTitle" type="text" name="title" placeholder="TITRE DE VOTRE TÂCHE*" autocomplete="off" required/>
+              <div class="animated-button">
+                  <span class="icon-paper-plane" style="cursor: not-allowed"><i data-feather="lock"></i></span>
+                  <span class="next-button taskFormTitle"><i data-feather="unlock"></i></span>
+              </div>
+            </div>
+            <div class="input-section createDesc-section folded">
+              <input class="taskFormDesc" type="text" name="description" placeholder="DÉSCRIPTION"/>
+              <div class="animated-button">
+                  <span class="icon-lock" style="cursor: not-allowed"><i data-feather="lock"></i></span>
+                  <span class="next-button taskFormDesc"><i data-feather="unlock"></i></span>
+              </div>
+            </div>
+            <div class="input-section createDueDate-section folded">
+              <input class="taskFormDueDate" type="date" name="due_date" placeholder="DATE D'ÉCHÉANCE"/>
+              <div class="animated-button">
+                  <span class="icon-repeat-lock" style="cursor: not-allowed"><i data-feather="lock"></i></span>
+                   <span class="next-button taskFormDueDate">
+                       <button type="submit" style="background: none;color: inherit;border: none;padding: 0;font: inherit;cursor: pointer;outline: inherit;">
+                           <i data-feather="unlock"></i>
+                       </button>
+                   </span>
+              </div>
+            </div>
+            <div class="success">
+              <p>TÂCHE CRÉÉE</p>
+            </div>
+          </form>
+        </div>
+
+
+
+
+
+    <!-- ____________ JavaScript ____________ -->
+    <script></script>
+
+    <!-- js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../static/js/main.js"></script>
+</body>
+</html>

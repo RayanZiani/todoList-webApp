@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Request, Depends, Form
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import APIRouter, Request, Depends
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from datetime import date
@@ -21,29 +21,35 @@ def get_db():
     finally:
         db.close()
 
-# Route pour afficher la page d'accueil avec la liste des tâches
-@router.get("/", response_class=HTMLResponse)
-async def get_home(request: Request, db: Session = Depends(get_db)):
-    try:
-        tasks = db.query(Task).all()
-        return templates.TemplateResponse("index.html", {"request": request, "tasks": tasks})
-    except Exception as e:
-        return templates.TemplateResponse("index.html", {"request": request, "tasks": [], "error": str(e)})
-
-# Définir un modèle Pydantic pour valider les données du JSON
+# Modèle Pydantic pour valider les données JSON lors de la création d'une tâche
 class TaskCreate(BaseModel):
     title: str
     description: str = None
-    due_date: str = None  # Assure-toi que la date est reçue sous forme de chaîne
-# Route pour ajouter une nouvelle tâche depuis le formulaire HTML
+    due_date: str = None  # Date sous forme de chaîne
+
+# Route pour afficher la page d'accueil avec la liste des tâches
+@router.get("/", response_class=HTMLResponse)
+async def get_home(request: Request, db: Session = Depends(get_db)):
+    tasks = db.query(Task).all()
+    return templates.TemplateResponse("index.html", {"request": request, "tasks": tasks})
+
+# Route pour la page Ajouter une tâche (add.html)
+@router.get("/add", response_class=HTMLResponse)
+async def get_add(request: Request):
+    return templates.TemplateResponse("add.html", {"request": request})
+
+# Route pour la page ToDo (todo.html)
+@router.get("/todo", response_class=HTMLResponse)
+async def get_todo(request: Request, db: Session = Depends(get_db)):
+    tasks = db.query(Task).all()
+    return templates.TemplateResponse("todo.html", {"request": request, "tasks": tasks})
+
+# Route pour ajouter une nouvelle tâche via JSON
 @router.post("/tasks/create")
 async def create_task(task: TaskCreate, db: Session = Depends(get_db)):
     try:
         # Convertir la chaîne due_date en objet date si elle est fournie
-        if task.due_date:
-            due_date_parsed = date.fromisoformat(task.due_date)
-        else:
-            due_date_parsed = None
+        due_date_parsed = date.fromisoformat(task.due_date) if task.due_date else None
 
         # Créer la nouvelle tâche avec les données reçues
         new_task = Task(title=task.title, description=task.description, due_date=due_date_parsed)
@@ -51,16 +57,10 @@ async def create_task(task: TaskCreate, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(new_task)
 
-        return JSONResponse(content={"success": True, "task": {
-            "id": new_task.id,
-            "title": new_task.title,
-            "description": new_task.description,
-            "due_date": new_task.due_date.strftime('%Y-%m-%d') if new_task.due_date else None
-        }})
+        # Rediriger vers la page ToDo après la création de la tâche
+        return RedirectResponse(url="/todo", status_code=303)
     except Exception as e:
         return JSONResponse(content={"success": False, "message": str(e)}, status_code=400)
-
-
 
 # Route pour supprimer une tâche
 @router.delete("/tasks/{task_id}/delete")
@@ -72,4 +72,3 @@ async def delete_task(task_id: int, db: Session = Depends(get_db)):
         return JSONResponse(content={"success": True, "message": "Tâche supprimée"})
     else:
         return JSONResponse(content={"success": False, "message": "Tâche non trouvée"}, status_code=404)
-

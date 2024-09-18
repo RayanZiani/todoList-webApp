@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from . import models
 from .database import engine
-from .routes import router  # Importer le routeur de routes.py
+from . import models
+from .routes import router  # Importer le routeur défini dans routes.py
 
 # Initialiser la base de données
 models.Base.metadata.create_all(bind=engine)

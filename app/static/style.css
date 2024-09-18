@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Monoton&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 * {
   font-family: "roboto", sans-serif;
@@ -7,6 +8,147 @@ body {
   background-color: #2b2b2b;
 }
 
+/* top logo center */
+/* top logo center */
+.logoHeader a {
+  text-decoration: none;
+}
+
+.logoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(30px);
+  height: 40px;
+  width: 100%;
+  cursor: pointer;
+}
+.logoHeader__style {
+  text-align: center;
+  color: #6a778e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 20px auto;
+  width: 75px;
+  height: 75px;
+  background: white;
+  border-radius: 75px;
+  font-family: "roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 1000;
+  letter-spacing: 2px;
+  transition: 1s box-shadow, 0.2s color;
+}
+.logoHeader__style:hover {
+  box-shadow: 0 5px 35px 0 rgba(0, 0, 0, 0.1);
+  color: #333333;
+  transition: 0.2s color;
+}
+.logoHeader__style:hover::before {
+  display: block;
+  content: "";
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  background: rgba(71, 114, 234, 0.81);
+  border-radius: 75px;
+  z-index: -1;
+  animation: 1s clockwise infinite;
+}
+.logoHeader__style:hover::after {
+  display: block;
+  content: "";
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  background: rgba(71, 114, 234, 0.81);
+  border-radius: 75px;
+  z-index: -1;
+  animation: 1s clockwise infinite;
+}
+.logoHeader__style:hover:after {
+  background: rgba(71, 114, 234, 0.81);
+  animation: 2s counterclockwise infinite;
+}
+
+@keyframes clockwise {
+  0% {
+    top: -5px;
+    left: 0;
+  }
+  12% {
+    top: -2px;
+    left: 2px;
+  }
+  25% {
+    top: 0;
+    left: 5px;
+  }
+  37% {
+    top: 2px;
+    left: 2px;
+  }
+  50% {
+    top: 5px;
+    left: 0;
+  }
+  62% {
+    top: 2px;
+    left: -2px;
+  }
+  75% {
+    top: 0;
+    left: -5px;
+  }
+  87% {
+    top: -2px;
+    left: -2px;
+  }
+  100% {
+    top: -5px;
+    left: 0;
+  }
+}
+@keyframes counterclockwise {
+  0% {
+    top: -5px;
+    right: 0;
+  }
+  12% {
+    top: -2px;
+    right: 2px;
+  }
+  25% {
+    top: 0;
+    right: 5px;
+  }
+  37% {
+    top: 2px;
+    right: 2px;
+  }
+  50% {
+    top: 5px;
+    right: 0;
+  }
+  62% {
+    top: 2px;
+    right: -2px;
+  }
+  75% {
+    top: 0;
+    right: -5px;
+  }
+  87% {
+    top: -2px;
+    right: -2px;
+  }
+  100% {
+    top: -5px;
+    right: 0;
+  }
+}
 .container {
   width: 600px;
   margin: 50px auto;
@@ -59,8 +201,8 @@ textarea {
   outline: none;
 }
 .button1:hover {
-  background-color: #406ff3;
-  box-shadow: 0 15px 20px #4097f3;
+  background-color: rgba(71, 114, 234, 0.81);
+  box-shadow: 0 15px 20px #406ff3;
   color: #fff;
   transform: translateY(-7px);
 }
@@ -125,7 +267,7 @@ ul {
   margin-left: 1rem;
   opacity: 0;
   pointer-events: none;
-  color: #406ff3;
+  color: rgba(71, 114, 234, 0.81);
   background: #fff;
   padding: 0.75rem;
   transition: 250ms ease all;
@@ -150,7 +292,7 @@ ul {
   left: 1rem;
   width: 3.5rem;
   height: 3.5rem;
-  background: #406ff3;
+  background: rgba(71, 114, 234, 0.81);
   border-radius: 17.5px;
   transition: 250ms cubic-bezier(1, 0.2, 0.1, 1.2) all;
 }
@@ -1222,7 +1364,7 @@ ul {
 .createTaskForm header {
   position: relative;
   z-index: 4;
-  background: white;
+  background: #d5d5d5;
   padding: 20px 40px;
   border-radius: 15px 15px 0 0;
 }
@@ -1326,6 +1468,8 @@ ul {
   font-weight: 100;
   width: 100%;
   border: 0;
+  position: relative;
+  z-index: 1000;
 }
 
 .next {
@@ -1349,7 +1493,7 @@ ul {
   margin-top: -75px;
 }
 .success p {
-  color: white;
+  color: #d5d5d5;
   font-weight: 900;
   letter-spacing: 2px;
   font-size: 18px;

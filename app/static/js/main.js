@@ -1,5 +1,8 @@
 feather.replace() // icooooooon
 
+
+// redirect after creating a task
+
 document.addEventListener("DOMContentLoaded", function() {
     // Attacher des événements aux boutons de suppression
     const deleteButtons = document.querySelectorAll(".deleteButton");
@@ -66,10 +69,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: JSON.stringify(taskData)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.redirected) {
+                    console.log(`Redirection to: ${response.url}`);
+                    // Attendre 2 secondes avant de rediriger
+                    setTimeout(() => {
+                        window.location.href = response.url;
+                    }, 1200);
+                } else {
+                    return response.json();
+                }
+            })
             .then(data => {
-                console.log("Response from server:", data);
-                if (data.success) {
+                if (data && data.success) {
                     // Ajouter la nouvelle tâche au DOM sans recharger la page
                     const taskList = document.getElementById("taskList");
                     const newTask = document.createElement("li");
@@ -105,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     // Réinitialiser le formulaire
                     taskForm.reset();
-                } else {
+                } else if (data) {
                     alert("Erreur lors de la création de la tâche.");
                 }
             })
@@ -117,57 +129,61 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+
+
+
+// create task form animation
+
 $(document).ready(function() {
-  // Gestion de l'input title
-  $('.taskFormTitle').on("change keyup paste", function() {
-    if ($(this).val()) {
-      $('.icon-paper-plane').addClass("next");
-    } else {
-      $('.icon-paper-plane').removeClass("next");
-    }
-  });
+  setTimeout(function() {
+    // Tous vos événements jQuery ici, après un petit délai
+    $('.taskFormTitle').on("change keyup paste", function() {
+      if ($(this).val()) {
+        $('.icon-paper-plane').addClass("next");
+      } else {
+        $('.icon-paper-plane').removeClass("next");
+      }
+    });
 
-  // Gestion du hover du bouton next
-  $('.next-button').hover(function() {
-    $(this).css('cursor', 'pointer');
-  });
+    $('.next-button').hover(function() {
+      $(this).css('cursor', 'pointer');
+    });
 
-  // Click sur le bouton title
-  $('.next-button.taskFormTitle').click(function() {
-    console.log("Title button clicked");
-    $('.createTitle-section').addClass("fold-up");
-    $('.createDesc-section').removeClass("folded");
-  });
+    $('.next-button.taskFormTitle').click(function() {
+      console.log("Title button clicked");
+      $('.createTitle-section').addClass("fold-up");
+      $('.createDesc-section').removeClass("folded");
+    });
 
-  // Gestion de l'input Desc
-  $('.taskFormDesc').on("change keyup paste", function() {
-    if ($(this).val()) {
-      $('.icon-lock').addClass("next");
-    } else {
-      $('.icon-lock').removeClass("next");
-    }
-  });
+    $('.taskFormDesc').on("change keyup paste", function() {
+      if ($(this).val()) {
+        $('.icon-lock').addClass("next");
+      } else {
+        $('.icon-lock').removeClass("next");
+      }
+    });
 
-  // Click sur le bouton desc
-  $('.next-button.taskFormDesc').click(function() {
-    console.log("Password button clicked");
-    $('.createDesc-section').addClass("fold-up");
-    $('.createDueDate-section').removeClass("folded");
-  });
+    $('.next-button.taskFormDesc').click(function() {
+      console.log("Password button clicked");
+      $('.createDesc-section').addClass("fold-up");
+      $('.createDueDate-section').removeClass("folded");
+    });
 
-  // Gestion de l'input repeat-password
-  $('.taskFormDueDate').on("change keyup paste", function() {
-    if ($(this).val()) {
-      $('.icon-repeat-lock').addClass("next");
-    } else {
-      $('.icon-repeat-lock').removeClass("next");
-    }
-  });
+    $('.taskFormDueDate').on("change keyup paste", function() {
+      if ($(this).val()) {
+        $('.icon-repeat-lock').addClass("next");
+      } else {
+        $('.icon-repeat-lock').removeClass("next");
+      }
+    });
 
-  // Click sur le bouton repeat-password
-  $('.next-button.taskFormDueDate').click(function() {
-    console.log("Repeat password button clicked");
-    $('.createDueDate-section').addClass("fold-up");
-    $('.success').css("marginTop", 0);
-  });
+    $('.next-button.taskFormDueDate').click(function() {
+      console.log("Repeat password button clicked");
+      $('.createDueDate-section').addClass("fold-up");
+      $('.success').css("marginTop", 0);
+    });
+  }, 100); // Attendre 100ms avant d'attacher les événements jQuery
 });
+
+
+
