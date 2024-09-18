@@ -1,17 +1,21 @@
-$white: #d5d5d5;
+$white: #ffffff;
 $font-family_1: 'roboto', sans-serif;
 $font-family_2: 'Monoton', cursive;
+$font-tiny: .8em;
 $background-color_1: #2b2b2b;
 $background-color_2: white;
 $background-color_3: #28a745;
 $background-color_4: #218838;
 $background-color_5: rgba(0, 0, 0, 0.8);
 $primary: rgba(71, 114, 234, 0.81);
+$secondary: rgba(71, 114, 234, 0.98);
 $primary-hover: #406ff3;
+$validate-hover: #4cf340;
+$validate: #3fcc35;
 $error: #af0505;
 $error-hover: #df1010;
 $text-blue_1: #6a778e;
-$text-gray_1: #333333;
+$gray_1: #333333;
 $borderRadius: 10px;
 $spacer: 1rem;
 $linkHeight: $spacer * 3.5;
@@ -31,12 +35,14 @@ body {
 	background-color: $background-color_1;
 }
 
-/* top logo center */
+
 /* top logo center */
 .logoHeader a {
   text-decoration: none;
 }
 .logoHeader {
+  position: fixed;
+  z-index: 999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,7 +69,7 @@ body {
       transition: 1s box-shadow, .2s color;
       &:hover {
           box-shadow: 0 5px 35px 0 rgba(0,0,0,.1);
-          color: $text-gray_1;
+          color: $gray_1;
           transition: .2s color;
           &::before {
               display: block;
@@ -176,17 +182,77 @@ body {
 }
 
 
+/* tooltip */
 
+#taskList li {
+  position: relative;
+}
 
+#taskList .tooltip {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  background: $white;
+  color: $text-blue_1;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
 
+#taskList .tooltip::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#taskList .todo_leftSection:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#taskList .todo_leftSection:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* todo columns */
+.todo_columns {
+  columns: 2;
+}
+
+.todo_leftSection {
+  height: 100%;
+}
+.todo_rightSection {
+  position: relative;
+  left: 50%;
+}
+.todo_rightSection .creation_date{
+  font-size: $font-tiny;
+  font-weight: 200;
+  letter-spacing: 2px;
+}
 
 
 .container {
 	width: 600px;
-	margin: 50px auto;
+	left: 50%;
+    transform: translate(-50%, 0%);
+    top: 20%;
 	background-color: $background-color_2;
 	padding: 3%;
-	border-radius: 8px;
+	border-radius: 15px;
+    position: absolute;
 }
 .containerTitle {
 	text-align: center;
@@ -239,6 +305,7 @@ textarea {
 }
 
 .buttonError {
+    margin-top: 10px;
 	width: 140px;
     height: 45px;
     font-family: 'Roboto', sans-serif;
@@ -387,7 +454,7 @@ ul {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
-  top: 15%;
+  top: 25%;
 
   background: transparent;
 
@@ -441,11 +508,11 @@ ul {
       z-index: 1;
 
       input {
-        background-color: rgb(233, 226, 192);
+        background-color: $primary;
       }
 
       span {
-        background-color: rgb(233, 226, 192);
+        background-color: $primary;
       }
     }
 
@@ -457,11 +524,11 @@ ul {
       z-index: 0;
 
       input {
-        background-color: rgb(225, 188, 239);
+        background-color: $primary-hover;
       }
 
       span {
-        background-color: rgb(225, 188, 239);
+        background-color: $primary-hover;
       }
     }
 
@@ -472,7 +539,7 @@ ul {
 
   form input {
     background: lighten(rgb(243, 243, 251), 5%);
-    color: rgb(143, 143, 214);
+    color: $primary;
     width: 80%;
     border: 0;
     padding: 20px 40px;
@@ -483,15 +550,16 @@ ul {
     }
 
     &::placeholder {
-      color: rgb(143, 143, 214);
-      font-weight: 100;
+      color: $primary;
+      font-weight: 300;
+      letter-spacing: 2px;
     }
   }
 }
 
 .animated-button {
   width: 20%;
-  background-color: rgb(212, 212, 255);
+  background-color: $white;
 
   span {
     display: flex;
@@ -505,13 +573,13 @@ ul {
 
     i {
       font-size: 25px;
-      color: rgb(153, 153, 248);
+      color: $text-blue_1;
     }
   }
 
   .next-button {
-    background: transparent;
-    color: rgb(153, 153, 248);
+    background: $secondary;
+    color: $white;
     font-weight: 100;
     width: 100%;
     border: 0;

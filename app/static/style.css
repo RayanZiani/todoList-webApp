@@ -9,12 +9,13 @@ body {
 }
 
 /* top logo center */
-/* top logo center */
 .logoHeader a {
   text-decoration: none;
 }
 
 .logoHeader {
+  position: fixed;
+  z-index: 999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,12 +150,77 @@ body {
     right: 0;
   }
 }
+/* tooltip */
+#taskList li {
+  position: relative;
+}
+
+#taskList .tooltip {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  background: #ffffff;
+  color: #6a778e;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#taskList .tooltip::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#taskList .todo_leftSection:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#taskList .todo_leftSection:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* todo columns */
+.todo_columns {
+  columns: 2;
+}
+
+.todo_leftSection {
+  height: 100%;
+}
+
+.todo_rightSection {
+  position: relative;
+  left: 50%;
+}
+
+.todo_rightSection .creation_date {
+  font-size: 0.8em;
+  font-weight: 200;
+  letter-spacing: 2px;
+}
+
 .container {
   width: 600px;
-  margin: 50px auto;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  top: 20%;
   background-color: white;
   padding: 3%;
-  border-radius: 8px;
+  border-radius: 15px;
+  position: absolute;
 }
 
 .containerTitle {
@@ -208,6 +274,7 @@ textarea {
 }
 
 .buttonError {
+  margin-top: 10px;
   width: 140px;
   height: 45px;
   font-family: "Roboto", sans-serif;
@@ -1358,13 +1425,13 @@ ul {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
-  top: 15%;
+  top: 25%;
   background: transparent;
 }
 .createTaskForm header {
   position: relative;
   z-index: 4;
-  background: #d5d5d5;
+  background: #ffffff;
   padding: 20px 40px;
   border-radius: 15px 15px 0 0;
 }
@@ -1407,10 +1474,10 @@ ul {
   z-index: 1;
 }
 .createTaskForm .input-section.folded input {
-  background-color: rgb(233, 226, 192);
+  background-color: rgba(71, 114, 234, 0.81);
 }
 .createTaskForm .input-section.folded span {
-  background-color: rgb(233, 226, 192);
+  background-color: rgba(71, 114, 234, 0.81);
 }
 .createTaskForm .input-section.folded + .folded {
   width: 90%;
@@ -1420,17 +1487,17 @@ ul {
   z-index: 0;
 }
 .createTaskForm .input-section.folded + .folded input {
-  background-color: rgb(225, 188, 239);
+  background-color: #406ff3;
 }
 .createTaskForm .input-section.folded + .folded span {
-  background-color: rgb(225, 188, 239);
+  background-color: #406ff3;
 }
 .createTaskForm .input-section.fold-up {
   margin-top: -75px;
 }
 .createTaskForm form input {
   background: white;
-  color: rgb(143, 143, 214);
+  color: rgba(71, 114, 234, 0.81);
   width: 80%;
   border: 0;
   padding: 20px 40px;
@@ -1440,13 +1507,14 @@ ul {
   outline: none;
 }
 .createTaskForm form input::placeholder {
-  color: rgb(143, 143, 214);
-  font-weight: 100;
+  color: rgba(71, 114, 234, 0.81);
+  font-weight: 300;
+  letter-spacing: 2px;
 }
 
 .animated-button {
   width: 20%;
-  background-color: rgb(212, 212, 255);
+  background-color: #ffffff;
 }
 .animated-button span {
   display: flex;
@@ -1460,11 +1528,11 @@ ul {
 }
 .animated-button span i {
   font-size: 25px;
-  color: rgb(153, 153, 248);
+  color: #6a778e;
 }
 .animated-button .next-button {
-  background: transparent;
-  color: rgb(153, 153, 248);
+  background: rgba(71, 114, 234, 0.98);
+  color: #ffffff;
   font-weight: 100;
   width: 100%;
   border: 0;
@@ -1493,7 +1561,7 @@ ul {
   margin-top: -75px;
 }
 .success p {
-  color: #d5d5d5;
+  color: #ffffff;
   font-weight: 900;
   letter-spacing: 2px;
   font-size: 18px;

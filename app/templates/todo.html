@@ -39,17 +39,25 @@
 
 
     <div class="container">
-        <ul class="temp" id="taskList">
-            {% for task in tasks %}
+         {% for task in tasks %}
+            <ul class="temp" id="taskList">
                 <li id="task-{{ task.id }}">
-                    <h3>{{ task.title }}</h3>
-                    <p>{{ task.description }}</p>
-                    <p class="due_date"><strong>Date d'échéance :</strong> {{ task.due_date.strftime('%d/%m/%Y') }}</p>
-                    <span class="creation_date"><strong>Date d'ajout :</strong> {{ task.creation_date.strftime('%d/%m/%Y %H:%M:%S') }}</span>
-                    <button class="buttonError deleteButton" type="button" data-id="{{ task.id }}">Supprimer</button>
+                    <div class="todo_columns">
+                        <div class="todo_leftSection">
+                            <h3 class="todo_title">{{ task.title }}</h3>
+                            <p class="todo_desciption tooltip" style="word-wrap: break-word"><b>Note:</b> {{ task.description }}</p>
+                            <p class="due_date"><strong>Pour le :</strong> {{ task.due_date.strftime('%d/%m/%Y') }}</p>
+                        </div>
+                        <div class="todo_rightSection">
+                            <span class="creation_date">{{ task.creation_date.strftime('%d/%m/%Y %H:%M:%S') }}</span>
+                            <button class="buttonError deleteButton" type="button" data-id="{{ task.id }}">Supprimer</button>
+                        </div>
+                    </div>
+
                 </li>
-            {% endfor %}
-        </ul>
+            </ul>
+        <hr>
+        {% endfor %}
     </div>
 
 

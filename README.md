@@ -124,8 +124,15 @@ _Once everything is installed :_
 - [x] Top Logo 
 ### (xx/xx/24)
 - [ ] Finish the new taskForm design
+- - [x] Color code
+- - [ ] Responsive
 - [ ] Create a issues section, to see the proposed features and known issues 
 - [ ] ToDo List design
+- - [x] Working tooltip
+- - [ ] Design the tooltip
+- - [ ] Working Checkbox
+- - [ ] Checkbox design
+- - [ ] Global design (3 columns, size and color)
 
 See the [open issues](https://github.com/RayanZiani/todoList-webApp/issues) for a full list of proposed features (and known issues).
 
@@ -143,7 +150,7 @@ Project Link: [https://github.com/RayanZiani/todoList-webApp](https://github.com
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[product-screenshot]: images/screenshot_early.png
+[product-screenshot]: images/black_menu.png
 
 [Python-url]: https://www.python.org/
 [HTML-url]: https://developer.mozilla.org/en-US/docs/Web/HTML
