@@ -44,10 +44,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#todo">ToDo</a></li>
   </ol>
 </details>
 
@@ -109,19 +106,33 @@ _Once everything is installed :_
    sass app/static/style.scss app/static/style.css
    ```
 
-
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-## ToDo
 
-_TODO (09/17/24) :_
+<!-- ROADMAP -->
+## Roadmap 
 
-1. finish the new taskForm
-2. Create Todo page
-3. Create Add page
+- [x] Create Todo page (09/18/24)
+- [x] Create Add page (09/18/24)
+- [x] Top Logo (09/18/24)
+- [ ] Finish the new taskForm design
+- [ ] Create a issues section, to see the proposed features and known issues 
+- [ ] ToDo List design
+
+See the [open issues](https://github.com/RayanZiani/todoList-webApp/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+## Contact
+
+ZIANI Rayan - support@rayanziani.com
+
+Project Link: [https://github.com/RayanZiani/todoList-webApp](https://github.com/RayanZiani/todoList-webApp)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
