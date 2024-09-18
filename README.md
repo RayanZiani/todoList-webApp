@@ -1,6 +1,7 @@
 <a id="readme-top"></a>
 
-
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 
 <br />
 <div align="center">
@@ -45,6 +46,7 @@
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -68,7 +70,10 @@ Here's why:
 
 This section list every framework/libraries used in this project.
 
-* [![Python][Python.org]][Python-url]
+* [<img src="https://img.shields.io/badge/Sass-5632a8?style=for-the-badge&logo=Sass&logoColor=white" />][SASS-url]
+* [<img src="https://img.shields.io/badge/HTML5-5632a8?style=for-the-badge&logo=html5&logoColor=white" />][HTML-url]
+* [<img src="https://img.shields.io/badge/Python-5632a8?style=for-the-badge&logo=python&logoColor=white" />][Python-url]
+* [<img src="https://img.shields.io/badge/JavaScript-5632a8?style=for-the-badge&logo=javascript&logoColor=white" />][JavaScript-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -113,9 +118,11 @@ _Once everything is installed :_
 <!-- ROADMAP -->
 ## Roadmap 
 
-- [x] Create Todo page (09/18/24)
-- [x] Create Add page (09/18/24)
-- [x] Top Logo (09/18/24)
+### (09/18/24)
+- [x] Create Todo page 
+- [x] Create Add page 
+- [x] Top Logo 
+### (xx/xx/24)
 - [ ] Finish the new taskForm design
 - [ ] Create a issues section, to see the proposed features and known issues 
 - [ ] ToDo List design
@@ -137,9 +144,16 @@ Project Link: [https://github.com/RayanZiani/todoList-webApp](https://github.com
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [product-screenshot]: images/screenshot_early.png
+
 [Python-url]: https://www.python.org/
+[HTML-url]: https://developer.mozilla.org/en-US/docs/Web/HTML
+[SASS-url]: https://sass-lang.com/
 [JavaScript-url]: https://www.javascript.com/
 
 
+[stars-shield]: https://img.shields.io/github/stars/RayanZiani/todoList-webApp.svg?style=for-the-badge
+[stars-url]: https://github.com/RayanZiani/todoList-webApp/stargazers
 
+[issues-shield]: https://img.shields.io/github/issues/RayanZiani/todoList-webApp.svg?style=for-the-badge
+[issues-url]: https://github.com/RayanZiani/todoList-webApp/issues
 
