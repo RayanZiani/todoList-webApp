@@ -47,21 +47,21 @@
           </header>
           <form class="formTask" id="taskForm" action="/tasks/create" method="post">
             <div class="input-section createTitle-section">
-              <input class="taskFormTitle" type="text" name="title" placeholder="TITRE DE VOTRE TÂCHE" maxlength="50" autocomplete="off" required/>
+              <input class="taskFormTitle" type="text" name="title" placeholder="TITRE DE VOTRE TÂCHE" maxlength="25" autocomplete="off" required/>
               <div class="animated-button">
                   <span class="icon-paper-plane" style="cursor: not-allowed"><i data-feather="lock"></i></span>
                   <span class="next-button taskFormTitle"><i data-feather="unlock"></i></span>
               </div>
             </div>
             <div class="input-section createDesc-section folded">
-              <input class="taskFormDesc" type="text" name="description" placeholder="DÉSCRIPTION"/>
+              <input class="taskFormDesc" type="text" name="description" maxlength="150" placeholder="DÉSCRIPTION" required/>
               <div class="animated-button">
                   <span class="icon-lock" style="cursor: not-allowed"><i data-feather="lock"></i></span>
                   <span class="next-button taskFormDesc"><i data-feather="unlock"></i></span>
               </div>
             </div>
             <div class="input-section createDueDate-section folded">
-              <input class="taskFormDueDate" type="date" name="due_date" placeholder="DATE D'ÉCHÉANCE"/>
+              <input class="taskFormDueDate" type="date" name="due_date" placeholder="DATE D'ÉCHÉANCE" required/>
               <div class="animated-button">
                   <span class="icon-repeat-lock" style="cursor: not-allowed"><i data-feather="lock"></i></span>
                    <span class="next-button taskFormDueDate">

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -65,10 +65,32 @@ async def create_task(task: TaskCreate, db: Session = Depends(get_db)):
 # Route pour supprimer une tâche
 @router.delete("/tasks/{task_id}/delete")
 async def delete_task(task_id: int, db: Session = Depends(get_db)):
+    try:
+        task = db.query(Task).filter(Task.id == task_id).first()
+        if task:
+            db.delete(task)
+            db.commit()
+            return JSONResponse(content={"success": True, "message": "Tâche supprimée"})
+        else:
+            raise HTTPException(status_code=404, detail="Tâche non trouvée")
+    except Exception as e:
+        # Ajoute un log ici si nécessaire
+        return JSONResponse(content={"success": False, "message": f"Erreur serveur: {str(e)}"}, status_code=500)
+
+@router.get("/tasks/{task_id}")
+async def get_task(task_id: int, db: Session = Depends(get_db)):
+    print(f"Received task_id: {task_id}")  # Log the task ID
     task = db.query(Task).filter(Task.id == task_id).first()
     if task:
-        db.delete(task)
-        db.commit()
-        return JSONResponse(content={"success": True, "message": "Tâche supprimée"})
+        return {
+            "success": True,
+            "task": {
+                "title": task.title,
+                "due_date": task.due_date,
+                "creation_date": task.creation_date,
+                "description": task.description
+            }
+        }
     else:
-        return JSONResponse(content={"success": False, "message": "Tâche non trouvée"}, status_code=404)
+        print(f"Task with ID {task_id} not found")
+        raise HTTPException(status_code=404, detail="Task not found")

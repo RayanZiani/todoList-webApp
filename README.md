@@ -87,9 +87,17 @@ Follow this little guide to complete the installation and learn how to use my op
 
 These libraries are required to continue the installation.
 
-* python
+* Windows / Linux
   ```sh
-  pip install fastapi
+  pip install fastapi, uvicorn, sqlalchemy, jinja2
+  ```
+  
+* Windows 
+* * Install Node.js
+  ```sh
+  npm install -g sass
+  ```
+
 
 ### Installation
 
@@ -110,6 +118,10 @@ _Once everything is installed :_
    ```bash
    sass app/static/style.scss app/static/style.css
    ```
+   * adding --watch will compile the scss everytime you save the code automaticaly
+   ```bash
+    sass --watch app/static/style.scss app/static/style.css
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -118,21 +130,26 @@ _Once everything is installed :_
 <!-- ROADMAP -->
 ## Roadmap 
 
-### (09/18/24)
+### Done | *last update: 09/19/2024*
 - [x] Create Todo page 
 - [x] Create Add page 
 - [x] Top Logo 
-### (xx/xx/24)
+### ..
 - [ ] Finish the new taskForm design
 - - [x] Color code
 - - [ ] Responsive
 - [ ] Create a issues section, to see the proposed features and known issues 
 - [ ] ToDo List design
 - - [x] Working tooltip
-- - [ ] Design the tooltip
+- - [x] Design the tooltip
 - - [ ] Working Checkbox
-- - [ ] Checkbox design
-- - [ ] Global design (3 columns, size and color)
+- - - [ ] Back
+- - - [x] Front
+- - [x] Context menu
+- - - [x] Copy button
+- - - [x] Download button
+- - - [x] View Details button
+- - - [x] Delete button
 
 See the [open issues](https://github.com/RayanZiani/todoList-webApp/issues) for a full list of proposed features (and known issues).
 
