@@ -287,31 +287,34 @@ console.log(nodes); // Debug: check if target nodes are found
 
     this.targetNode.forEach((target) => {
       target.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default browser menu
         this.isOpened = true;
+
+        // Debug log to confirm the right-click is working
+        console.log(`Context menu opened for target: ${target}, at coordinates: (${e.clientX}, ${e.clientY})`);
 
         const { clientX, clientY } = e;
         document.body.appendChild(contextMenu);
-        contextMenu.style.display = "block"; // Ensure the menu is visible
+        contextMenu.style.display = "block"; // Make sure the menu is visible
 
-        const positionY =
-          clientY + contextMenu.scrollHeight >= window.innerHeight
-            ? window.innerHeight - contextMenu.scrollHeight - 20
-            : clientY;
-        const positionX =
-          clientX + contextMenu.scrollWidth >= window.innerWidth
-            ? window.innerWidth - contextMenu.scrollWidth - 20
-            : clientX;
+        // Positioning logic
+        const positionY = clientY + contextMenu.scrollHeight >= window.innerHeight
+          ? window.innerHeight - contextMenu.scrollHeight - 20
+          : clientY;
 
-        contextMenu.setAttribute(
-          "style",
-          `--width: ${contextMenu.scrollWidth}px;
-          --height: ${contextMenu.scrollHeight}px;
-          --top: ${positionY}px;
-          --left: ${positionX}px;`
-        );
+        const positionX = clientX + contextMenu.scrollWidth >= window.innerWidth
+          ? window.innerWidth - contextMenu.scrollWidth - 20
+          : clientX;
+
+        // Set the position directly
+        contextMenu.style.top = `${positionY}px`;
+        contextMenu.style.left = `${positionX}px`;
+
+        // Log final position to ensure correct placement
+        console.log(`Menu position set to top: ${positionY}px, left: ${positionX}px`);
       });
     });
+
   }
 }
 

@@ -26,13 +26,10 @@
           <a href="/todo" class="navbar__link"><i data-feather="list"></i><span>ToDo</span></a>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="trash-2"></i><span>Corbeille</span></a>
+          <a href="#" class="navbar__link"><i data-feather="dollar-sign"></i><span>Plans</span></a>
         </li>
         <li class="navbar__item">
           <a href="#" class="navbar__link"><i data-feather="tool"></i><span>Réglages</span></a>
-        </li>
-        <li class="navbar__item navbar__item--bottom" style="bottom: 10%!important">
-          <a href="#" class="navbar__link"><i data-feather="sun"></i><span>Logout</span></a>
         </li>
       </ul>
     </nav>
@@ -59,29 +56,33 @@
 
     <div class="todo-list">
         {% for task in tasks %}
-      <label class="todo target target-dark" data-id="{{ task.id }}" id="task-{{ task.id }}" >
-        <div class="todo__form">
-          <input class="todo__state" type="checkbox" />
+        <label class="todo target target-dark" data-id="{{ task.id }}" id="task-{{ task.id }}" data-completed="{{ task.completed }}">
 
-          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-            <use xlink:href="#todo__line" class="todo__line"></use>
-            <use xlink:href="#todo__box" class="todo__box"></use>
-            <use xlink:href="#todo__check" class="todo__check"></use>
-            <use xlink:href="#todo__circle" class="todo__circle"></use>
-          </svg>
+            <div class="todo__form">
+                <input class="todo__state" type="checkbox" {% if task.completed %}checked{% endif %} />
 
-          <div class="todo__text">{{ task.title }}</div>
-          <p class="todo_desciption tooltip" style="word-wrap: break-word"><b>Note:</b> {{ task.description }}</p>
-        </div>
-      </label>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
+                    <use xlink:href="#todo__line" class="todo__line"></use>
+                    <use xlink:href="#todo__box" class="todo__box"></use>
+                    <use xlink:href="#todo__check" class="todo__check"></use>
+                    <use xlink:href="#todo__circle" class="todo__circle"></use>
+                </svg>
+                <span class="todo__smallText right">Right-click!</span>
+                <span class="todo__smallText left">Pour le: <strong>{{ task.due_date }}</strong></span>
+                <div class="todo__text">{{ task.title }}</div>
+                <p class="todo_desciption tooltip" style="word-wrap: break-word"><b>Note:</b> {{ task.description }}</p>
+            </div>
+        </label>
         {% endfor %}
     </div>
 
-    <!--
-    <div id="context-menu" class="context-menu">
-        <button class="deleteButton" type="button" data-id=""><i data-feather="trash"></i></button>
+
+    <div id="popupModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modalText">Popup content will go here...</p>
+      </div>
     </div>
-    -->
 
 
 <!--
@@ -115,13 +116,83 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../static/js/main.js"></script>
 
-    <!-- dom for context menu -->
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-          let currentTaskId = null; // store task.id when menu opens
+            // checkbox check for db
+            const checkboxes = document.querySelectorAll(".todo__state");
 
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", function () {
+                    const taskId = this.closest("label").getAttribute("data-id");
+                    const isChecked = this.checked;  // true if checked, false if unchecked
+
+                    // Send the updated completion status to the backend
+                    fetch(`/tasks/${taskId}/complete`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({completed: isChecked})  // Wrap in an object with "completed" key
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log(`Task ${taskId} updated to ${isChecked ? "completed" : "not completed"}`);
+                            } else {
+                                alert("Error updating task status");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error updating task status:", error);
+                            alert("Error updating task status");
+                        });
+                });
+            });
+        })
+    </script>
+
+    <script>
+        /*
+        *
+        * L'évènement DOMContentLoaded est déclenché quand le document
+        * HTML initial est complètement chargé et analysé,
+        * sans attendre la fin du chargement des feuilles de styles, images et sous-document.
+        *
+        */
+        document.addEventListener("DOMContentLoaded", function () {
+          let currentTaskId = null;
+          let currentDueDate = null;
+          let creationDate = null;
+          let isCompleted = null;
+          let completedAt = null;
+
+          // --- Modal
+          const modal = document.getElementById("popupModal");
+          const modalText = document.getElementById("modalText");
+          const closeModal = document.getElementsByClassName("close")[0];
+
+          // -- Modal open
+          function openModal(message) {
+            modalText.innerText = message;
+            modal.style.display = "block";
+          }
+
+          // -- Modal close button
+          closeModal.onclick = function () {
+            modal.style.display = "none";
+          }
+
+          // -- Modal close click outside
+          window.onclick = function (event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+          }
+
+        // --- Context Menu Items
           const menuItems = [
-          {
+            { // -- Context Menu | Button Copy
               content: `${copyIcon}Copy`,
               events: {
                 click: function (e) {
@@ -134,45 +205,41 @@
 
                   console.log(`Task ID: ${currentTaskId} - Copy button clicked`);
 
-                  // Fetch task details from your backend
+                  // - Context Menu Items | Copy | Fetch data
                   fetch(`/tasks/${currentTaskId}`)
                     .then(response => response.json())
                     .then(data => {
                       if (data.success && data.task) {
-                        // Create a JSON object with the task details
                         const taskDetails = {
                           title: data.task.title,
                           due_date: data.task.due_date,
                           creation_date: data.task.creation_date,
-                          description: data.task.description
+                          description: data.task.description,
+                          completed_at: data.task.completed_at
                         };
 
-                        // Convert task details to JSON format
                         const taskDetailsJSON = JSON.stringify(taskDetails, null, 2);
 
-                        // Copy the JSON string to the clipboard
                         navigator.clipboard.writeText(taskDetailsJSON).then(() => {
                           console.log("Task details copied to clipboard:", taskDetailsJSON);
-                          alert("Task details copied to clipboard!");
+                          openModal("Task details copied to clipboard!");
                         }).catch(err => {
                           console.error("Failed to copy task details:", err);
-                          alert("Failed to copy task details.");
+                          openModal("Failed to copy task details.");
                         });
                       } else {
                         console.error("Task not found or error occurred while fetching task details.");
-                        alert("Task not found.");
+                        openModal("Task not found or error occurred while fetching task details.");
                       }
                     })
                     .catch(error => {
                       console.error("Error while fetching task details:", error);
-                      alert("An error occurred while fetching task details.");
+                      openModal("An error occurred while fetching task details.");
                     });
                 }
               }
             },
-            //{ content: `${pasteIcon}Paste` },
-            //{ content: `${cutIcon}Cut` },
-            {
+            { // -- Context Menu Items | Download Button
               content: `${downloadIcon}Download`,
               events: {
                 click: function (e) {
@@ -185,33 +252,29 @@
 
                   console.log(`Task ID: ${currentTaskId} - Download button clicked`);
 
-                  // Fetch task details from your backend
+                  // - Context Menu Items | Download | Fetch data
                   fetch(`/tasks/${currentTaskId}`)
                     .then(response => response.json())
                     .then(data => {
                       if (data.success && data.task) {
-                        // Create a JSON object with the task details
                         const taskDetails = {
                           title: data.task.title,
                           due_date: data.task.due_date,
                           creation_date: data.task.creation_date,
-                          description: data.task.description
+                          description: data.task.description,
+                          completed_at: data.task.completed_at
                         };
 
-                        // Convert task details to CSV format
                         const csvContent = convertToCSV([taskDetails]);
 
-                        // Create a blob with the CSV content
                         const blob = new Blob([csvContent], { type: "text/csv" });
                         const url = URL.createObjectURL(blob);
 
-                        // Create a link and trigger the download
                         const a = document.createElement("a");
                         a.href = url;
                         a.download = `task_${currentTaskId}.csv`;
                         a.click();
 
-                        // Clean up the object URL after download
                         URL.revokeObjectURL(url);
                       } else {
                         console.error("Task not found or error occurred while fetching task details.");
@@ -225,29 +288,33 @@
                 }
               }
             },
-            {
+            { // -- Context Menu Items | Details Button
               content: `${dateIcon} Details`,
               divider: "top",
               events: {
                 click: function (e) {
                   e.preventDefault();
-
-                  if (currentDueDate, creationDate) {
-                    alert(`Ajouté le: ${creationDate} et à faire pour le: ${currentDueDate}`);
+                  // - Context Menu Items | Message diffère en fonction du "isCompleted"
+                  if (currentTaskId && creationDate) {
+                    if (isCompleted) {
+                      openModal(`Ajouté le: ${creationDate}, fait le: ${completedAt}`);
+                    } else {
+                      openModal(`Ajouté le: ${creationDate}, à faire pour le: ${currentDueDate}`);
+                    }
                   } else {
-                    alert("Due date and creation date not available.");
+                    console.log('Modal/data error')
+                    openModal("Task details are not available.");
                   }
                 }
               }
             },
-            {
+            { // -- Context Menu Items | Delete Button
               content: `${deleteIcon}Delete`,
               divider: "top",
               events: {
                 click: function (e) {
                   e.preventDefault();
 
-                  // debug task id
                   if (!currentTaskId) {
                     console.error("No task ID available for deletion");
                     return;
@@ -255,7 +322,6 @@
 
                   console.log(`Task ID: ${currentTaskId} - Delete button clicked`);
 
-                  // Proceed to delete the task
                   fetch(`/tasks/${currentTaskId}/delete`, {
                     method: "DELETE",
                     headers: {
@@ -267,7 +333,6 @@
                     console.log("Response from server:", data);
 
                     if (data.success) {
-                      // if everything's fine
                       const taskItem = document.getElementById(`task-${currentTaskId}`);
                       if (taskItem) {
                         taskItem.remove();
@@ -286,7 +351,6 @@
             }
           ];
 
-          // darktheme
           const darkMenu = new ContextMenu({
             target: ".target-dark",
             menuItems
@@ -294,24 +358,29 @@
 
           darkMenu.init();
 
-          // Override the context menu to capture the task ID and due date
           document.querySelectorAll(".target-dark").forEach(task => {
             task.addEventListener("contextmenu", async function (e) {
               currentTaskId = this.getAttribute("data-id");
               console.log(`Context menu opened on Task ID: ${currentTaskId}`);
 
-              // Fetch task details to get the due date before displaying the context menu
+              // Fetch task details to get the due date, creation date, and completion status before displaying the context menu
               await fetch(`/tasks/${currentTaskId}`)
                 .then(response => response.json())
                 .then(data => {
                   if (data.success && data.task) {
                     currentDueDate = data.task.due_date;
                     creationDate = data.task.creation_date;
-                    console.log(`Due date for task ${currentTaskId} is: ${currentDueDate}`);
-                    console.log(`Creation date for task ${currentTaskId} is: ${creationDate}`);
+                    isCompleted = data.task.completed; // Track if the task is completed
+                    completedAt = data.task.completed_at; // Track when it was completed
+                    console.log(`Due date for task ${currentTaskId}: ${currentDueDate}`);
+                    console.log(`Creation date for task ${currentTaskId}: ${creationDate}`);
+                    console.log(`Completed status for task ${currentTaskId}: ${isCompleted}`);
+                    console.log(`Completion date for task ${currentTaskId}: ${completedAt}`);
                   } else {
                     currentDueDate = null;
                     creationDate = null;
+                    isCompleted = null;
+                    completedAt = null;
                     console.error("Task not found or error occurred while fetching task details.");
                   }
                 })
@@ -319,6 +388,8 @@
                   console.error("Error while fetching task details:", error);
                   currentDueDate = null;
                   creationDate = null;
+                  isCompleted = null;
+                  completedAt = null;
                 });
             });
           });
@@ -333,7 +404,7 @@
 
           // Add rows
           for (const row of arr) {
-            const values = keys.map(key => `"${row[key]}"`);
+            const values = keys.map(key => "${row[key]}");
             csvRows.push(values.join(','));
           }
 

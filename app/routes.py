@@ -2,18 +2,16 @@ from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
-from datetime import date
+from datetime import datetime, date
 from pydantic import BaseModel
 from .models import Task
 from .database import SessionLocal
 
-# Créer l'instance du routeur
 router = APIRouter()
 
-# Configuration de Jinja2 pour utiliser les templates
 templates = Jinja2Templates(directory="app/templates")
 
-# Dépendance pour obtenir une session de base de données
+# session sql alchemy
 def get_db():
     db = SessionLocal()
     try:
@@ -48,16 +46,13 @@ async def get_todo(request: Request, db: Session = Depends(get_db)):
 @router.post("/tasks/create")
 async def create_task(task: TaskCreate, db: Session = Depends(get_db)):
     try:
-        # Convertir la chaîne due_date en objet date si elle est fournie
         due_date_parsed = date.fromisoformat(task.due_date) if task.due_date else None
-
-        # Créer la nouvelle tâche avec les données reçues
         new_task = Task(title=task.title, description=task.description, due_date=due_date_parsed)
         db.add(new_task)
         db.commit()
         db.refresh(new_task)
 
-        # Rediriger vers la page ToDo après la création de la tâche
+        # redirection quand ca créer task
         return RedirectResponse(url="/todo", status_code=303)
     except Exception as e:
         return JSONResponse(content={"success": False, "message": str(e)}, status_code=400)
@@ -88,9 +83,26 @@ async def get_task(task_id: int, db: Session = Depends(get_db)):
                 "title": task.title,
                 "due_date": task.due_date,
                 "creation_date": task.creation_date,
-                "description": task.description
+                "description": task.description,
+                "completed": task.completed,
+                "completed_at": task.completed_at.strftime('%Y-%m-%d %H:%M') if task.completed_at else None
             }
         }
     else:
         print(f"Task with ID {task_id} not found")
         raise HTTPException(status_code=404, detail="Task not found")
+
+class TaskUpdateCompleted(BaseModel):
+    completed: bool
+@router.put("/tasks/{task_id}/complete")
+async def complete_task(task_id: int, task_update: TaskUpdateCompleted, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    # Update the completed status from the model
+    task.completed = task_update.completed
+    task.completed_at = datetime.utcnow() if task_update.completed else None  # Update completed_at if completed
+
+    db.commit()
+    return {"success": True, "message": "Task updated", "completed": task.completed}

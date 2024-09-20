@@ -1,3 +1,23 @@
+/* ________________ SUMMARY ________________
+
+1. Root
+1.1 Variables
+1.1.a
+1.1.b
+1.1.c
+2. Base
+
+
+
+
+
+
+
+
+*/
+/* ------ 1. Root ------*/
+/* ----- 1.1 Variables -----*/
+/* ---- 1.1.a Base Colors ----*/
 @import url("https://fonts.googleapis.com/css2?family=Monoton&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 * {
@@ -41,6 +61,25 @@ body {
   border-bottom: none;
 }
 
+.todo span {
+  font-weight: 300;
+  font-size: 0.55em;
+  position: absolute;
+  opacity: 0 !important;
+}
+
+.todo .right {
+  transform: translate(18em, 2.3em);
+}
+
+.todo .left {
+  transform: translate(0, 2.3em);
+}
+
+.todo:hover span {
+  opacity: 1 !important;
+}
+
 .todo__state {
   position: absolute;
   top: 0;
@@ -49,6 +88,11 @@ body {
 }
 
 .todo__text {
+  color: #6a778e;
+  transition: all 0.4s linear 0.4s;
+}
+
+.todo__smallText {
   color: #6a778e;
   transition: all 0.4s linear 0.4s;
 }
@@ -118,6 +162,11 @@ body {
   animation-duration: 0.56s;
 }
 
+.todo__state:checked ~ .todo__smallText {
+  transition-delay: 0s;
+  color: rgba(71, 114, 234, 0.81);
+  opacity: 0.6;
+}
 .todo__state:checked ~ .todo__text {
   transition-delay: 0s;
   color: rgba(71, 114, 234, 0.81);
@@ -138,7 +187,8 @@ body {
   animation-name: explode;
 }
 
-/* context menu */
+/* context menu
+
 .context-menu {
   display: none;
   position: absolute;
@@ -162,6 +212,7 @@ body {
 .context-menu ul li:hover {
   background-color: #f2f2f2;
 }
+
 
 /* context menu v2 */
 .contextMenu {
@@ -420,7 +471,8 @@ body {
   overflow: hidden;
   position: absolute;
   top: 0;
-  font-size: 14px;
+  cursor: default;
+  font-size: 0.8em;
   color: var(--item-color);
   padding: 5px 8px;
   border-radius: 5px;
@@ -500,7 +552,7 @@ input {
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  /*border-radius: 4px;*/
 }
 
 textarea {
@@ -1769,8 +1821,9 @@ ul {
 }
 .createTaskForm form input::placeholder {
   color: rgba(71, 114, 234, 0.81);
-  font-weight: 300;
+  font-weight: 350;
   letter-spacing: 2px;
+  opacity: 0.6;
 }
 
 .animated-button {
@@ -1828,6 +1881,46 @@ ul {
   font-size: 18px;
   width: 100%;
   text-align: center;
+}
+
+/* modal */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Close Button */
+.modal-content .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-content .close:hover,
+.modal-content .close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */
