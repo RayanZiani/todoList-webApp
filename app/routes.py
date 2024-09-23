@@ -1,15 +1,27 @@
-from fastapi import APIRouter, Request, Depends, HTTPException
+from fastapi import APIRouter, Request, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.security import OAuth2PasswordBearer
+
 from sqlalchemy.orm import Session
 from datetime import datetime, date
 from pydantic import BaseModel
-from .models import Task
+from jose import JWTError, jwt
+from .models import Task, User
 from .database import SessionLocal
 
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+credentials_exception = HTTPException(
+    status_code=401,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
 
 # session sql alchemy
 def get_db():
@@ -19,11 +31,36 @@ def get_db():
     finally:
         db.close()
 
+
+# Function to get the current user based on the token
+async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    try:
+        payload = jwt.decode(token, "SECRET_KEY", algorithms=["HS256"])
+        user_id: int = payload.get("sub")
+        if user_id is None:
+            raise credentials_exception
+        user = db.query(User).filter(User.id == user_id).first()
+        if user is None:
+            raise credentials_exception
+        return user
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Could not validate credentials")
+
+# Example of how to use get_current_user to protect a route
+@router.get("/tasks")
+async def get_user_tasks(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    tasks = db.query(Task).filter(Task.user_id == current_user.id).all()
+    return tasks
+
 # Modèle Pydantic pour valider les données JSON lors de la création d'une tâche
 class TaskCreate(BaseModel):
     title: str
     description: str = None
     due_date: str = None  # Date sous forme de chaîne
+
+
+
+
 
 # Route pour afficher la page d'accueil avec la liste des tâches
 @router.get("/", response_class=HTMLResponse)
@@ -33,7 +70,7 @@ async def get_home(request: Request, db: Session = Depends(get_db)):
 
 # Route pour la page Dashboard (dashboard.html)
 @router.get("/dash", response_class=HTMLResponse)
-async def get_todo(request: Request, db: Session = Depends(get_db)):
+async def get_dash(request: Request, db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
     return templates.TemplateResponse("dashboard.html", {"request": request, "tasks": tasks})
 
@@ -50,12 +87,12 @@ async def get_todo(request: Request, db: Session = Depends(get_db)):
 
 # Route pour la page Abonnements une tâche (plans.html)
 @router.get("/plans", response_class=HTMLResponse)
-async def get_add(request: Request):
+async def get_plans(request: Request):
     return templates.TemplateResponse("plans.html", {"request": request})
 
 # Route pour la page Paramètres une tâche (settings.html)
 @router.get("/settings", response_class=HTMLResponse)
-async def get_add(request: Request):
+async def get_settings(request: Request):
     return templates.TemplateResponse("settings.html", {"request": request})
 
 # Route pour ajouter une nouvelle tâche via JSON
