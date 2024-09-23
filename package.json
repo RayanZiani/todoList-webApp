@@ -2,6 +2,7 @@
   "dependencies": {
     "augmented-ui": "^2.0.0",
     "feather-icons": "^4.29.2",
-    "sass": "^1.78.0"
+    "sass": "^1.78.0",
+    "swiper": "^11.1.14"
   }
 }

@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ToDo List | Menu</title>
     <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 
 <script src="https://unpkg.com/feather-icons"></script>
@@ -50,6 +51,24 @@
 </div >
 
     <!-- ____________ JavaScript ____________ -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"> // swiperjs </script>
+    <script> // swiperjs
+        var swiper = new Swiper('.blog-slider', {
+          spaceBetween: 30,
+          effect: 'fade',
+          loop: true,
+          mousewheel: {
+            invert: false,
+          },
+          // autoHeight: true,
+          pagination: {
+            el: '.blog-slider__pagination',
+            clickable: true,
+          }
+        });
+    </script>
 
     <!-- gsap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
