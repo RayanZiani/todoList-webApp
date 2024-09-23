@@ -31,6 +31,12 @@ async def get_home(request: Request, db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
     return templates.TemplateResponse("index.html", {"request": request, "tasks": tasks})
 
+# Route pour la page Dashboard (dashboard.html)
+@router.get("/dash", response_class=HTMLResponse)
+async def get_todo(request: Request, db: Session = Depends(get_db)):
+    tasks = db.query(Task).all()
+    return templates.TemplateResponse("dashboard.html", {"request": request, "tasks": tasks})
+
 # Route pour la page Ajouter une tâche (add.html)
 @router.get("/add", response_class=HTMLResponse)
 async def get_add(request: Request):
@@ -41,6 +47,16 @@ async def get_add(request: Request):
 async def get_todo(request: Request, db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
     return templates.TemplateResponse("todo.html", {"request": request, "tasks": tasks})
+
+# Route pour la page Abonnements une tâche (plans.html)
+@router.get("/plans", response_class=HTMLResponse)
+async def get_add(request: Request):
+    return templates.TemplateResponse("plans.html", {"request": request})
+
+# Route pour la page Paramètres une tâche (settings.html)
+@router.get("/settings", response_class=HTMLResponse)
+async def get_add(request: Request):
+    return templates.TemplateResponse("settings.html", {"request": request})
 
 # Route pour ajouter une nouvelle tâche via JSON
 @router.post("/tasks/create")

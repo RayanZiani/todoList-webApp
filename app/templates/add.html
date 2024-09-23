@@ -17,7 +17,7 @@
     <nav class="navbar">
       <ul class="navbar__menu">
         <li class="navbar__item">
-          <a href="/" class="navbar__link"><i data-feather="pie-chart"></i><span>Dashboard</span></a>
+          <a href="/dash" class="navbar__link"><i data-feather="pie-chart"></i><span>Dashboard</span></a>
         </li>
         <li class="navbar__item">
           <a href="/add" class="navbar__link"><i data-feather="plus-square"></i><span>Ajouter</span></a>
@@ -26,10 +26,10 @@
           <a href="/todo" class="navbar__link"><i data-feather="list"></i><span>ToDo</span></a>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="dollar-sign"></i><span>Plans</span></a>
+          <a href="/plans" class="navbar__link"><i data-feather="dollar-sign"></i><span>Abonnements</span></a>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><i data-feather="tool"></i><span>Réglages</span></a>
+          <a href="/settings" class="navbar__link"><i data-feather="tool"></i><span>Paramètres</span></a>
         </li>
       </ul>
     </nav>
@@ -73,12 +73,29 @@
           </form>
         </div>
 
-
-
-
+<div class="area" >
+        <ul class="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+        </ul>
+</div >
 
     <!-- ____________ JavaScript ____________ -->
-    <script></script>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+            }
+        });
+    </script>
 
     <!-- js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
