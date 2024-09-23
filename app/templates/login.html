@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo List | Gate</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<script src="https://unpkg.com/feather-icons"></script>
+<body>
+<div class="center-login">
+    <div class="login-container" id="login-container">
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Création de compte</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i data-feather="github"></i></a>
+                    <a href="#" class="social"><i data-feather="linkedin"></i></a>
+                    <a href="#" class="social"><i data-feather="link-2"></i></a>
+                </div>
+                <input type="text" placeholder="Name" />
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <input type="password" placeholder="Repeat password" />
+                <button style="margin-top: 15px;">Créer ton compte</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Connexion</h1>
+
+                <div class="social-container">
+                    <a href="#" class="social"><i data-feather="github"></i></a>
+                    <a href="#" class="social"><i data-feather="linkedin"></i></a>
+                    <a href="#" class="social"><i data-feather="link-2"></i></a>
+                </div>
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <a href="#">Mot de passe oublié?</a>
+                <button>Se connecter</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Re-Bonjour!</h1>
+                    <p>Pour acceder à ton compte, connecte toi</p>
+                    <button class="ghost" id="signIn">Se connecter</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Bienvenue!</h1>
+                    <p>Si tu n'as pas encore de compte, c'est ici</p>
+                    <button class="ghost" id="signUp">Créer ton compte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- ____________ JavaScript ____________ -->
+    <script>
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('login-container');
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+            console.log()
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+            console.log()
+        });
+    </script>
+
+    <!-- js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../static/js/main.js"></script>
+
+</body>
+</html>
