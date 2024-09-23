@@ -163,7 +163,11 @@ _Once everything is installed :_
 - - [ ] Back-end
 - [ ] Traduction
 - - [ ] English
-
+- [ ] Login/Register ~ *on going*
+- - [x] Form Front 
+- - [ ] Form Back
+- - [ ] Database
+- - [ ] Link user with tasks
 See the [open issues](https://github.com/RayanZiani/todoList-webApp/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -180,7 +184,7 @@ Project Link: [https://github.com/RayanZiani/todoList-webApp](https://github.com
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[product-screenshot]: images/black_menu.png
+[product-screenshot]: images/addPage.png
 
 [Python-url]: https://www.python.org/
 [HTML-url]: https://developer.mozilla.org/en-US/docs/Web/HTML

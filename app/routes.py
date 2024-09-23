@@ -26,13 +26,13 @@ class TaskCreate(BaseModel):
     due_date: str = None  # Date sous forme de chaîne
 
 
-# Route pour afficher la page d'accueil avec la liste des tâches
+# Route pour afficher la page login
 @router.get("/login", response_class=HTMLResponse)
 async def get_login(request: Request, db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
     return templates.TemplateResponse("login.html", {"request": request})
 
-# Route pour afficher la page d'accueil avec la liste des tâches
+# Route pour afficher la page d'accueil
 @router.get("/", response_class=HTMLResponse)
 async def get_home(request: Request, db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
