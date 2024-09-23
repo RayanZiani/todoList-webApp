@@ -168,6 +168,7 @@ _Once everything is installed :_
 - - [ ] Form Back
 - - [ ] Database
 - - [ ] Link user with tasks
+
 See the [open issues](https://github.com/RayanZiani/todoList-webApp/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
