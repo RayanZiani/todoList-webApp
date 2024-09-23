@@ -130,14 +130,15 @@ _Once everything is installed :_
 <!-- ROADMAP -->
 ## Roadmap 
 
-### Done | *last update: 09/19/2024*
+### Done | *last update: 09/23/2024*
 - [x] Create Todo page 
 - [x] Create Add page 
 - [x] Top Logo 
-### ..
-- [ ] Finish the new taskForm design
+- - [x] Finish the new taskForm design
 - - [x] Color code
-- - [ ] Responsive
+- - [x] Bug fix
+### ..
+
 - [ ] Create a issues section, to see the proposed features and known issues 
 - [ ] ToDo List design
 - - [x] Working tooltip
@@ -150,6 +151,18 @@ _Once everything is installed :_
 - - - [x] Download button
 - - - [x] View Details button
 - - - [x] Delete button
+- [ ] Dashboard Page ~ *on going*
+- - [x] Design
+- - [ ] Back-end
+- [ ] Home Page ~ *on going*
+- - [ ] Design
+- [ ] Plans Page ~ *on going*
+- - [ ] Design
+- [ ] Settings Page ~ *on going*
+- - [ ] Design
+- - [ ] Back-end
+- [ ] Traduction
+- - [ ] English
 
 See the [open issues](https://github.com/RayanZiani/todoList-webApp/issues) for a full list of proposed features (and known issues).
 
