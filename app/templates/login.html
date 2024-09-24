@@ -27,7 +27,7 @@
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="/api/login" method="POST">
+            <form id="loginForm" method="POST">
                 <h1>Connexion</h1>
 
                 <div class="social-container">
@@ -35,8 +35,8 @@
                     <a href="#" class="social"><i data-feather="linkedin"></i></a>
                     <a href="#" class="social"><i data-feather="link-2"></i></a>
                 </div>
-                <input type="email" name="email" placeholder="Email" />
-                <input type="password" name="password" placeholder="Password" />
+                <input id="email" type="email" name="email" placeholder="Email" />
+                <input id="password" type="password" name="password" placeholder="Password" />
                 <a href="#">Mot de passe oublié?</a>
                 <button type="submit">Se connecter</button>
             </form>
@@ -74,6 +74,33 @@
 </div >
 
     <!-- ____________ JavaScript ____________ -->
+<script>
+  document.querySelector('#loginForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const email = document.querySelector('#email').value;
+    const password = document.querySelector('#password').value;
+
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({ email, password }),
+    });
+
+   if (response.ok) {
+        const data = await response.json();
+        const token = data.access_token;
+
+        sessionStorage.setItem('authToken', token);
+
+        window.location.href = '/';
+    } else {
+        alert("Login failed!");
+    }
+  });
+</script>
     <script>
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');

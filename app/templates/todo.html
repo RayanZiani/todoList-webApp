@@ -37,55 +37,63 @@
       </ul>
     </nav>
 
-    <svg viewBox="0 0 0 0" style="position: absolute; z-index: -1; opacity: 0;">
-      <defs>
-        <linearGradient id="boxGradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="25" y2="25">
-          <stop offset="0%"   stop-color="rgba(71, 114, 234, 0.81)"/>
-          <stop offset="100%" stop-color="#406ff3"/>
-        </linearGradient>
 
-        <linearGradient id="lineGradient">
-          <stop offset="0%"    stop-color="rgba(71, 114, 234, 0.81)"/>
-          <stop offset="100%"  stop-color="#406ff3"/>
-        </linearGradient>
+    <div id="todo-content">
 
-        <path id="todo__line" stroke="url(#lineGradient)" d="M21 12.3h168v0.1z"></path>
-        <path id="todo__box" stroke="url(#boxGradient)" d="M21 12.7v5c0 1.3-1 2.3-2.3 2.3H8.3C7 20 6 19 6 17.7V7.3C6 6 7 5 8.3 5h10.4C20 5 21 6 21 7.3v5.4"></path>
-        <path id="todo__check" stroke="url(#boxGradient)" d="M10 13l2 2 5-5"></path>
-        <circle id="todo__circle" cx="13.5" cy="12.5" r="10"></circle>
-      </defs>
-    </svg>
+    </div>
+
+            <svg viewBox="0 0 0 0" style="position: absolute; z-index: -1; opacity: 0;">
+              <defs>
+                <linearGradient id="boxGradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="25" y2="25">
+                  <stop offset="0%"   stop-color="rgba(71, 114, 234, 0.81)"/>
+                  <stop offset="100%" stop-color="#406ff3"/>
+                </linearGradient>
+
+                <linearGradient id="lineGradient">
+                  <stop offset="0%"    stop-color="rgba(71, 114, 234, 0.81)"/>
+                  <stop offset="100%"  stop-color="#406ff3"/>
+                </linearGradient>
+
+                <path id="todo__line" stroke="url(#lineGradient)" d="M21 12.3h168v0.1z"></path>
+                <path id="todo__box" stroke="url(#boxGradient)" d="M21 12.7v5c0 1.3-1 2.3-2.3 2.3H8.3C7 20 6 19 6 17.7V7.3C6 6 7 5 8.3 5h10.4C20 5 21 6 21 7.3v5.4"></path>
+                <path id="todo__check" stroke="url(#boxGradient)" d="M10 13l2 2 5-5"></path>
+                <circle id="todo__circle" cx="13.5" cy="12.5" r="10"></circle>
+              </defs>
+            </svg>
 
 
-    <div class="todo-list">
-        {% for task in tasks %}
-        <label class="todo target target-dark" data-id="{{ task.id }}" id="task-{{ task.id }}" data-completed="{{ task.completed }}">
+            <div class="todo-list">
+                {% for task in tasks %}
+                <label class="todo target target-dark" data-id="{{ task.id }}" id="task-{{ task.id }}" data-completed="{{ task.completed }}">
 
-            <div class="todo__form">
-                <input class="todo__state" type="checkbox" {% if task.completed %}checked{% endif %} />
+                    <div class="todo__form">
+                        <input class="todo__state" type="checkbox" {% if task.completed %}checked{% endif %} />
 
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-                    <use xlink:href="#todo__line" class="todo__line"></use>
-                    <use xlink:href="#todo__box" class="todo__box"></use>
-                    <use xlink:href="#todo__check" class="todo__check"></use>
-                    <use xlink:href="#todo__circle" class="todo__circle"></use>
-                </svg>
-                <span class="todo__smallText right">Right-click!</span>
-                <span class="todo__smallText left">Pour le: <strong>{{ task.due_date }}</strong></span>
-                <div class="todo__text">{{ task.title }}</div>
-                <p class="todo_desciption tooltip" style="word-wrap: break-word"><b>Note:</b> {{ task.description }}</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
+                            <use xlink:href="#todo__line" class="todo__line"></use>
+                            <use xlink:href="#todo__box" class="todo__box"></use>
+                            <use xlink:href="#todo__check" class="todo__check"></use>
+                            <use xlink:href="#todo__circle" class="todo__circle"></use>
+                        </svg>
+                        <span class="todo__smallText right">Right-click!</span>
+                        <span class="todo__smallText left">Pour le: <strong>{{ task.due_date }}</strong></span>
+                        <div class="todo__text">{{ task.title }}</div>
+                        <p class="todo_desciption tooltip" style="word-wrap: break-word"><b>Note:</b> {{ task.description }}</p>
+                    </div>
+                </label>
+                {% endfor %}
             </div>
-        </label>
-        {% endfor %}
-    </div>
 
 
-    <div id="popupModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p id="modalText">Popup content will go here...</p>
-      </div>
-    </div>
+            <div id="popupModal" class="modal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <p id="modalText">Popup content will go here...</p>
+              </div>
+            </div>
+
+
+
 
 
 <div class="area" >
@@ -134,6 +142,49 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../static/js/main.js"></script>
 
+    <script>
+        async function fetchTodoData() {
+            const token = sessionStorage.getItem('authToken');
+
+            if (!token) {
+                window.location.href = '/login';  // Redirect to login if no token is found
+                return;
+            }
+
+            const response = await fetch('/api/todo-data', {  // Adjust to use your route if needed
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const tasks = data.tasks;
+
+                // Clear the existing content
+                document.getElementById('todo-content').innerHTML = '';
+
+                // Loop through tasks and display them
+                tasks.forEach(task => {
+                    const taskElement = document.createElement('div');
+                    taskElement.classList.add('task-item');
+                    taskElement.innerHTML = `
+                        <p><strong>${task.title}</strong> - ${task.description}</p>
+                        <p>Due Date: ${task.due_date || 'No due date'}</p>
+                        <p>Completed: ${task.completed ? 'Yes' : 'No'}</p>
+                    `;
+                    document.getElementById('todo-content').appendChild(taskElement);
+                });
+            } else {
+                alert('Unauthorized. Please log in again.');
+                window.location.href = '/login';
+            }
+        }
+
+        // Automatically fetch the ToDo data on page load
+        window.onload = fetchDashboardData;
+    </script> <!-- load page -->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -146,7 +197,7 @@
                     const isChecked = this.checked;  // true if checked, false if unchecked
 
                     // Send the updated completion status to the backend
-                    fetch(`/tasks/${taskId}/complete`, {
+                    fetch(`/api/tasks/${taskId}/complete`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -155,6 +206,7 @@
                     })
                         .then(response => response.json())
                         .then(data => {
+                            console.log(data, taskId)
                             if (data.success) {
                                 console.log(`Task ${taskId} updated to ${isChecked ? "completed" : "not completed"}`);
                             } else {
@@ -224,7 +276,7 @@
                   console.log(`Task ID: ${currentTaskId} - Copy button clicked`);
 
                   // - Context Menu Items | Copy | Fetch data
-                  fetch(`/tasks/${currentTaskId}`)
+                  fetch(`/api/tasks/${currentTaskId}`)
                     .then(response => response.json())
                     .then(data => {
                       if (data.success && data.task) {
@@ -271,7 +323,7 @@
                   console.log(`Task ID: ${currentTaskId} - Download button clicked`);
 
                   // - Context Menu Items | Download | Fetch data
-                  fetch(`/tasks/${currentTaskId}`)
+                  fetch(`/api/tasks/${currentTaskId}`)
                     .then(response => response.json())
                     .then(data => {
                       if (data.success && data.task) {
@@ -340,7 +392,7 @@
 
                   console.log(`Task ID: ${currentTaskId} - Delete button clicked`);
 
-                  fetch(`/tasks/${currentTaskId}/delete`, {
+                  fetch(`/api/tasks/${currentTaskId}/delete`, {
                     method: "DELETE",
                     headers: {
                       "Content-Type": "application/json"
@@ -382,7 +434,7 @@
               console.log(`Context menu opened on Task ID: ${currentTaskId}`);
 
               // Fetch task details to get the due date, creation date, and completion status before displaying the context menu
-              await fetch(`/tasks/${currentTaskId}`)
+              await fetch(`/api/tasks/${currentTaskId}`)
                 .then(response => response.json())
                 .then(data => {
                   if (data.success && data.task) {

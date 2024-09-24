@@ -10,7 +10,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Inclusion des routes séparées
-app.include_router(tasksRoutes.router, prefix="/api")  # Préfixe API pour les routes CRUD des tâches
-app.include_router(pageRoutes.router)  # Routes pour les pages HTML
+app.include_router(tasksRoutes.router, prefix="/api")  #
+app.include_router(pageRoutes.router)
 app.include_router(usersRoutes.router, prefix="/api")
 

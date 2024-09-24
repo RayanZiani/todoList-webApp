@@ -27,7 +27,12 @@ async def create_task(task: TaskCreate, db: Session = Depends(get_db)):
         db.add(new_task)
         db.commit()
         db.refresh(new_task)
-        return RedirectResponse(url="/todo", status_code=303)
+        return JSONResponse(content={"success": True, "task": {
+            "id": new_task.id,
+            "title": new_task.title,
+            "description": new_task.description,
+            "due_date": new_task.due_date.strftime('%Y-%m-%d') if new_task.due_date else None
+        }})
     except Exception as e:
         return JSONResponse(content={"success": False, "message": str(e)}, status_code=400)
 

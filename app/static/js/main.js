@@ -10,48 +10,48 @@ setTimeout(function(){
 
 // redirect after creating a task
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
     // Attacher des événements aux boutons de suppression
     const deleteButtons = document.querySelectorAll(".deleteButton");
 
     deleteButtons.forEach(button => {
-        button.addEventListener("click", function(event) {
+        button.addEventListener("click", function (event) {
             event.preventDefault();  // Empêche le rechargement de la page
             const taskId = this.dataset.id;  // Récupère l'ID de la tâche via data-id
 
             console.log(`Task ID: ${taskId} - Delete button clicked`);
 
-            fetch(`/tasks/${taskId}/delete`, {
+            fetch(`/api/tasks/${taskId}/delete`, {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/x-www-form-urlencoded"
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Response from server:", data);
-                if (data.success) {
-                    // Supprimer la tâche du DOM après suppression
-                    const taskItem = document.getElementById(`task-${taskId}`);
-                    if (taskItem) {
-                        taskItem.remove();
-                        console.log(`Task ${taskId} removed from DOM`);
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Response from server:", data);
+                    if (data.success) {
+                        // Supprimer la tâche du DOM après suppression
+                        const taskItem = document.getElementById(`task-${taskId}`);
+                        if (taskItem) {
+                            taskItem.remove();
+                            console.log(`Task ${taskId} removed from DOM`);
+                        }
+                    } else {
+                        alert("Erreur lors de la suppression de la tâche.");
                     }
-                } else {
-                    alert("Erreur lors de la suppression de la tâche.");
-                }
-            })
-            .catch(error => {
-                console.error("Erreur :", error);
-                alert("Une erreur est survenue lors de la suppression.");
-            });
+                })
+                .catch(error => {
+                    console.error("Erreur :", error);
+                    alert("Une erreur est survenue lors de la suppression.");
+                });
         });
     });
 
     const taskForm = document.getElementById("taskForm");
     if (taskForm) {
-        taskForm.addEventListener("submit", function(event) {
+        taskForm.addEventListener("submit", function (event) {
             event.preventDefault();  // Empêche le rechargement de la page
 
             // Récupérer les données du formulaire
@@ -70,252 +70,250 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Task data to be created:", taskData);
 
             // Envoyer les données en AJAX
-            fetch("/tasks/create", {
+            fetch("/api/tasks/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(taskData)
+                body: JSON.stringify(taskData)  // Envoyer l'objet JSON
             })
-            .then(response => {
-                if (response.redirected) {
-                    console.log(`Redirection to: ${response.url}`);
-                    // Attendre 2 secondes avant de rediriger
-                    setTimeout(() => {
-                        window.location.href = response.url;
-                    }, 1200);
-                } else {
-                    return response.json();
-                }
-            })
-            .then(data => {
-                if (data && data.success) {
-                    // Ajouter la nouvelle tâche au DOM sans recharger la page
-                    const taskList = document.getElementById("taskList");
-                    const newTask = document.createElement("li");
-                    newTask.setAttribute("id", `task-${data.task.id}`);
-                    newTask.innerHTML = `
+                .then(response => {
+                    console.log(response);
+                    if (response.ok) {
+                        return response.json();  // Traiter la réponse JSON
+                    } else {
+                        throw new Error("Erreur lors de la création de la tâche.");
+                    }
+                })
+                .then(data => {
+                    console.log(data)
+                    if (data.success) {
+                        // Ajouter la nouvelle tâche au DOM sans recharger la page
+                        const taskList = document.getElementById("taskList");
+                        const newTask = document.createElement("li");
+                        newTask.setAttribute("id", `task-${data.task.id}`);
+                        newTask.innerHTML = `
                         <h3>${data.task.title}</h3>
                         <p>${data.task.description}</p>
                         <p><strong>Date d'échéance :</strong> ${data.task.due_date ? data.task.due_date : "Pas de date"}</p>
                         <button type="button" class="deleteButton" data-id="${data.task.id}">Supprimer</button>
                     `;
-                    taskList.appendChild(newTask);
+                        taskList.appendChild(newTask);
 
-                    // Attacher l'événement de suppression au nouveau bouton créé
-                    newTask.querySelector(".deleteButton").addEventListener("click", function(event) {
-                        event.preventDefault();
-                        const taskId = this.dataset.id;
-                        fetch(`/tasks/${taskId}/delete`, {
-                            method: "DELETE",
-                            headers: {
-                                "Content-Type": "application/json"
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                newTask.remove();
-                            } else {
-                                alert("Erreur lors de la suppression de la tâche.");
-                            }
-                        })
-                        .catch(error => console.error("Erreur :", error));
-                    });
+                        // Attacher l'événement de suppression au nouveau bouton créé
+                        newTask.querySelector(".deleteButton").addEventListener("click", function (event) {
+                            event.preventDefault();
+                            const taskId = this.dataset.id;
+                            fetch(`/tasks/${taskId}/delete`, {
+                                method: "DELETE",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        newTask.remove();
+                                    } else {
+                                        alert("Erreur lors de la suppression de la tâche.");
+                                    }
+                                })
+                                .catch(error => console.error("Erreur :", error));
+                        });
 
-                    // Réinitialiser le formulaire
-                    taskForm.reset();
-                } else if (data) {
-                    alert("Erreur lors de la création de la tâche.");
-                }
-            })
-            .catch(error => {
-                console.error("Erreur :", error);
-                alert("Une erreur est survenue lors de la création.");
-            });
+                        // Réinitialiser le formulaire
+                        taskForm.reset();
+
+                        // Afficher un message de succès
+                        alert("Tâche créée avec succès !");
+                    } else {
+                        alert("Erreur lors de la création de la tâche.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur :", error);
+                    alert("Une erreur est survenue lors de la création.");
+                });
         });
     }
+
 });
-
-
 
 
 // create task form animation
 
-$(document).ready(function() {
-  setTimeout(function() {
-    // Tous vos événements jQuery ici, après un petit délai
-    $('.taskFormTitle').on("change keyup paste", function() {
-      if ($(this).val()) {
-        $('.icon-paper-plane').addClass("next");
-      } else {
-        $('.icon-paper-plane').removeClass("next");
-      }
-    });
+$(document).ready(function () {
+    setTimeout(function () {
+        // Tous vos événements jQuery ici, après un petit délai
+        $('.taskFormTitle').on("change keyup paste", function () {
+            if ($(this).val()) {
+                $('.icon-paper-plane').addClass("next");
+            } else {
+                $('.icon-paper-plane').removeClass("next");
+            }
+        });
 
-    $('.next-button').hover(function() {
-      $(this).css('cursor', 'pointer');
-    });
+        $('.next-button').hover(function () {
+            $(this).css('cursor', 'pointer');
+        });
 
-    $('.next-button.taskFormTitle').click(function() {
-      console.log("Title button clicked");
-      $('.createTitle-section').addClass("fold-up");
-      $('.createDesc-section').removeClass("folded");
-    });
+        $('.next-button.taskFormTitle').click(function () {
+            console.log("Title button clicked");
+            $('.createTitle-section').addClass("fold-up");
+            $('.createDesc-section').removeClass("folded");
+        });
 
-    $('.taskFormDesc').on("change keyup paste", function() {
-      if ($(this).val()) {
-        $('.icon-lock').addClass("next");
-      } else {
-        $('.icon-lock').removeClass("next");
-      }
-    });
+        $('.taskFormDesc').on("change keyup paste", function () {
+            if ($(this).val()) {
+                $('.icon-lock').addClass("next");
+            } else {
+                $('.icon-lock').removeClass("next");
+            }
+        });
 
-    $('.next-button.taskFormDesc').click(function() {
-      console.log("Password button clicked");
-      $('.createDesc-section').addClass("fold-up");
-      $('.createDueDate-section').removeClass("folded");
-    });
+        $('.next-button.taskFormDesc').click(function () {
+            console.log("Password button clicked");
+            $('.createDesc-section').addClass("fold-up");
+            $('.createDueDate-section').removeClass("folded");
+        });
 
-    $('.taskFormDueDate').on("change keyup paste", function() {
-      if ($(this).val()) {
-        $('.icon-repeat-lock').addClass("next");
-      } else {
-        $('.icon-repeat-lock').removeClass("next");
-      }
-    });
+        $('.taskFormDueDate').on("change keyup paste", function () {
+            if ($(this).val()) {
+                $('.icon-repeat-lock').addClass("next");
+            } else {
+                $('.icon-repeat-lock').removeClass("next");
+            }
+        });
 
-    $('.next-button.taskFormDueDate').click(function() {
-      console.log("Repeat password button clicked");
-      $('.createDueDate-section').addClass("fold-up");
-      $('.success').css("marginTop", 0);
-    });
-  }, 100); // Attendre 100ms avant d'attacher les événements jQuery
+        $('.next-button.taskFormDueDate').click(function () {
+            console.log("Repeat password button clicked");
+            $('.createDueDate-section').addClass("fold-up");
+            $('.success').css("marginTop", 0);
+        });
+    }, 100); // Attendre 100ms avant d'attacher les événements jQuery
 });
-
 
 
 // context v2
 
 
-
 class ContextMenu {
-  constructor({ target = null, menuItems = [] }) {
-    this.target = target;
-    this.menuItems = menuItems;
-    this.mode = "dark"; // Force dark mode
-    this.targetNode = this.getTargetNode();
-    this.menuItemsNode = this.getMenuItemsNode();
-    this.isOpened = false;
-  }
-
-  getTargetNode() {
-    const nodes = document.querySelectorAll(this.target);
-console.log(nodes); // Debug: check if target nodes are found
-
-    if (nodes && nodes.length !== 0) {
-      return nodes;
-    } else {
-      console.error(`getTargetNode :: "${this.target}" target not found`);
-      return [];
-    }
-  }
-
-  getMenuItemsNode() {
-    const nodes = [];
-
-    if (!this.menuItems) {
-      console.error("getMenuItemsNode :: Please enter menu items");
-      return [];
+    constructor({target = null, menuItems = []}) {
+        this.target = target;
+        this.menuItems = menuItems;
+        this.mode = "dark"; // Force dark mode
+        this.targetNode = this.getTargetNode();
+        this.menuItemsNode = this.getMenuItemsNode();
+        this.isOpened = false;
     }
 
-    this.menuItems.forEach((data, index) => {
-      const item = this.createItemMarkup(data);
-      item.firstChild.setAttribute(
-        "style",
-        `animation-delay: ${index * 0.08}s`
-      );
-      nodes.push(item);
-    });
+    getTargetNode() {
+        const nodes = document.querySelectorAll(this.target);
+        console.log(nodes); // Debug: check if target nodes are found
 
-    return nodes;
-  }
-
-  createItemMarkup(data) {
-    const button = document.createElement("BUTTON");
-    const item = document.createElement("LI");
-
-    button.innerHTML = data.content;
-    button.classList.add("contextMenu-button");
-    item.classList.add("contextMenu-item");
-
-    if (data.divider) item.setAttribute("data-divider", data.divider);
-    item.appendChild(button);
-
-    if (data.events && data.events.length !== 0) {
-      Object.entries(data.events).forEach((event) => {
-        const [key, value] = event;
-        button.addEventListener(key, value);
-      });
+        if (nodes && nodes.length !== 0) {
+            return nodes;
+        } else {
+            console.error(`getTargetNode :: "${this.target}" target not found`);
+            return [];
+        }
     }
 
-    return item;
-  }
+    getMenuItemsNode() {
+        const nodes = [];
 
-  renderMenu() {
-    const menuContainer = document.createElement("UL");
+        if (!this.menuItems) {
+            console.error("getMenuItemsNode :: Please enter menu items");
+            return [];
+        }
 
-    menuContainer.classList.add("contextMenu");
-    menuContainer.setAttribute("data-theme", this.mode); // Dark mode forced
+        this.menuItems.forEach((data, index) => {
+            const item = this.createItemMarkup(data);
+            item.firstChild.setAttribute(
+                "style",
+                `animation-delay: ${index * 0.08}s`
+            );
+            nodes.push(item);
+        });
 
-    this.menuItemsNode.forEach((item) => menuContainer.appendChild(item));
-
-    return menuContainer;
-  }
-
-  closeMenu(menu) {
-    if (this.isOpened) {
-      this.isOpened = false;
-      menu.remove();
+        return nodes;
     }
-  }
 
-  init() {
-    const contextMenu = this.renderMenu();
-    document.addEventListener("click", () => this.closeMenu(contextMenu));
-    window.addEventListener("blur", () => this.closeMenu(contextMenu));
+    createItemMarkup(data) {
+        const button = document.createElement("BUTTON");
+        const item = document.createElement("LI");
 
-    this.targetNode.forEach((target) => {
-      target.addEventListener("contextmenu", (e) => {
-        e.preventDefault(); // Prevent default browser menu
-        this.isOpened = true;
+        button.innerHTML = data.content;
+        button.classList.add("contextMenu-button");
+        item.classList.add("contextMenu-item");
 
-        // Debug log to confirm the right-click is working
-        console.log(`Context menu opened for target: ${target}, at coordinates: (${e.clientX}, ${e.clientY})`);
+        if (data.divider) item.setAttribute("data-divider", data.divider);
+        item.appendChild(button);
 
-        const { clientX, clientY } = e;
-        document.body.appendChild(contextMenu);
-        contextMenu.style.display = "block"; // Make sure the menu is visible
+        if (data.events && data.events.length !== 0) {
+            Object.entries(data.events).forEach((event) => {
+                const [key, value] = event;
+                button.addEventListener(key, value);
+            });
+        }
 
-        // Positioning logic
-        const positionY = clientY + contextMenu.scrollHeight >= window.innerHeight
-          ? window.innerHeight - contextMenu.scrollHeight - 20
-          : clientY;
+        return item;
+    }
 
-        const positionX = clientX + contextMenu.scrollWidth >= window.innerWidth
-          ? window.innerWidth - contextMenu.scrollWidth - 20
-          : clientX;
+    renderMenu() {
+        const menuContainer = document.createElement("UL");
 
-        // Set the position directly
-        contextMenu.style.top = `${positionY}px`;
-        contextMenu.style.left = `${positionX}px`;
+        menuContainer.classList.add("contextMenu");
+        menuContainer.setAttribute("data-theme", this.mode); // Dark mode forced
 
-        // Log final position to ensure correct placement
-        console.log(`Menu position set to top: ${positionY}px, left: ${positionX}px`);
-      });
-    });
+        this.menuItemsNode.forEach((item) => menuContainer.appendChild(item));
 
-  }
+        return menuContainer;
+    }
+
+    closeMenu(menu) {
+        if (this.isOpened) {
+            this.isOpened = false;
+            menu.remove();
+        }
+    }
+
+    init() {
+        const contextMenu = this.renderMenu();
+        document.addEventListener("click", () => this.closeMenu(contextMenu));
+        window.addEventListener("blur", () => this.closeMenu(contextMenu));
+
+        this.targetNode.forEach((target) => {
+            target.addEventListener("contextmenu", (e) => {
+                e.preventDefault(); // Prevent default browser menu
+                this.isOpened = true;
+
+                // Debug log to confirm the right-click is working
+                console.log(`Context menu opened for target: ${target}, at coordinates: (${e.clientX}, ${e.clientY})`);
+
+                const {clientX, clientY} = e;
+                document.body.appendChild(contextMenu);
+                contextMenu.style.display = "block"; // Make sure the menu is visible
+
+                // Positioning logic
+                const positionY = clientY + contextMenu.scrollHeight >= window.innerHeight
+                    ? window.innerHeight - contextMenu.scrollHeight - 20
+                    : clientY;
+
+                const positionX = clientX + contextMenu.scrollWidth >= window.innerWidth
+                    ? window.innerWidth - contextMenu.scrollWidth - 20
+                    : clientX;
+
+                // Set the position directly
+                contextMenu.style.top = `${positionY}px`;
+                contextMenu.style.left = `${positionX}px`;
+
+                // Log final position to ensure correct placement
+                console.log(`Menu position set to top: ${positionY}px, left: ${positionX}px`);
+            });
+        });
+
+    }
 }
 
 const copyIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" style="margin-right: 7px" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
@@ -331,43 +329,10 @@ const dateIcon = `<svg viewBox="0 0 24 24" width="13px" height="13px"  fill="non
 const deleteIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none" style="margin-right: 7px" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
 
 
-
-/*
-// context menu
-document.addEventListener("DOMContentLoaded", function () {
-  const contextMenu = document.getElementById('context-menu');
-  let clickedTaskId = null;
-
-  // Show context menu on right-click
-  document.querySelectorAll('.todo').forEach(function (todo) {
-    todo.addEventListener('contextmenu', function (e) {
-      e.preventDefault();
-
-      clickedTaskId = todo.getAttribute('data-id'); // Get the ID of the right-clicked task
-
-      // Set the position of the context menu
-      contextMenu.style.top = `${e.pageY}px`;
-      contextMenu.style.left = `${e.pageX}px`;
-      contextMenu.style.display = 'block';
-
-      // Update the delete button data-id with the clicked task ID
-      const deleteButton = contextMenu.querySelector('.deleteButton');
-      deleteButton.setAttribute('data-id', clickedTaskId);
-    });
-  });
-
-  // Hide the context menu when clicking elsewhere
-  document.addEventListener('click', function () {
-    contextMenu.style.display = 'none';
-  });
-});
-*/
-
-
 function logout() {
-  // Remove the JWT token from localStorage or sessionStorage
-  localStorage.removeItem("access_token");
+    // Remove the JWT token from localStorage or sessionStorage
+    sessionStorage.removeItem("authToken");
 
-  // Optionally, redirect to login page
-  window.location.href = "/login";
+    // Optionally, redirect to login page
+    window.location.href = "/login";
 }

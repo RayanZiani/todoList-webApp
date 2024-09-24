@@ -38,6 +38,10 @@
       </ul>
     </nav>
 
+    <div id="home-content">
+        <p>Loading...</p>
+    </div>
+
 <div class="area" >
         <ul class="circles">
                 <li></li>
@@ -54,7 +58,33 @@
 </div >
 
     <!-- ____________ JavaScript ____________ -->
+<script>
+        async function fetchDashboardData() {
+            const token = sessionStorage.getItem('authToken');
 
+            if (!token) {
+                window.location.href = '/login';  // Redirect to login if no token is found
+                return;
+            }
+
+            const response = await fetch('/api/home-data', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('home-content').innerHTML = JSON.stringify(data);
+            } else {
+                alert('Unauthorized. Please log in again.');
+                window.location.href = '/login';
+            }
+        }
+        // Automatically fetch the dashboard data on page load
+        window.onload = fetchDashboardData;
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"> // swiperjs </script>
     <script> // swiperjs
@@ -79,5 +109,6 @@
     <!-- js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../static/js/main.js"></script>
+
 </body>
 </html>

@@ -105,7 +105,7 @@ _Below is all the instructions needed to install and run my project smoothly._
 
 1. starting it in a local server
    ```bash
-   uvicorn app.main:app --reload
+   uvicorn app.main:app --host 127.0.0.1 --port 8002 --reload
    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -130,33 +130,33 @@ _Once everything is installed :_
 <!-- ROADMAP -->
 ## Roadmap 
 
-### Done | *last update: 09/23/2024*
+### Done | *last update: 09/24/2024*
 - [x] Create Todo page 
 - [x] Create Add page 
 - [x] Top Logo 
 - - [x] Finish the new taskForm design
 - - [x] Color code
 - - [x] Bug fix
-### ..
-
-- [ ] Create a issues section, to see the proposed features and known issues 
-- [ ] ToDo List design
+- [x] Plans Page
+- - [x] Design
+- [x] ToDo List design
 - - [x] Working tooltip
 - - [x] Design the tooltip
-- - [ ] Working Checkbox
-- - - [ ] Back
+- - [x] Working Checkbox
+- - - [x] Back
 - - - [x] Front
 - - [x] Context menu
 - - - [x] Copy button
 - - - [x] Download button
 - - - [x] View Details button
 - - - [x] Delete button
+### ..
+
+- [ ] Create a issues section, to see the proposed features and known issues
 - [ ] Dashboard Page ~ *on going*
 - - [x] Design
 - - [ ] Back-end
 - [ ] Home Page ~ *on going*
-- - [ ] Design
-- [ ] Plans Page ~ *on going*
 - - [ ] Design
 - [ ] Settings Page ~ *on going*
 - - [ ] Design
@@ -165,8 +165,8 @@ _Once everything is installed :_
 - - [ ] English
 - [ ] Login/Register ~ *on going*
 - - [x] Form Front 
-- - [ ] Form Back
-- - [ ] Database
+- - [x] Form Back
+- - [x] Database
 - - [ ] Link user with tasks
 
 See the [open issues](https://github.com/RayanZiani/todoList-webApp/issues) for a full list of proposed features (and known issues).

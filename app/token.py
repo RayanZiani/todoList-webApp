@@ -1,4 +1,3 @@
-# token.py
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi import HTTPException

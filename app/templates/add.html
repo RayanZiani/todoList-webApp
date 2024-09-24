@@ -37,14 +37,16 @@
       </ul>
     </nav>
 
-
+    <div id="add-content">
+        <p>Loading...</p>
+    </div>
 
         <div class="createTaskForm">
           <header>
             <h1>Créer une tache</h1>
             <p>Remplir toutes les infos demandé</p>
           </header>
-          <form class="formTask" id="taskForm" action="/tasks/create" method="post">
+          <form class="formTask" id="taskForm" action="/api/tasks/create" method="post">
             <div class="input-section createTitle-section">
               <input class="taskFormTitle" type="text" name="title" placeholder="TITRE DE VOTRE TÂCHE" maxlength="25" autocomplete="off" required/>
               <div class="animated-button">
@@ -92,6 +94,36 @@
 </div >
 
     <!-- ____________ JavaScript ____________ -->
+
+    <script>
+        async function fetchDashboardData() {
+            const token = sessionStorage.getItem('authToken');
+
+            if (!token) {
+                window.location.href = '/login';  // Redirect to login if no token is found
+                return;
+            }
+
+            const response = await fetch('/api/add-data', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('add-content').innerHTML = JSON.stringify(data);
+            } else {
+                alert('Unauthorized. Please log in again.');
+                window.location.href = '/login';
+            }
+        }
+        // Automatically fetch the dashboard data on page load
+        window.onload = fetchDashboardData;
+    </script>
+
+
     <script>
         document.addEventListener('keydown', function(event) {
             if (event.key === "Enter") {
