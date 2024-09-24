@@ -362,3 +362,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 */
+
+
+function logout() {
+  // Remove the JWT token from localStorage or sessionStorage
+  localStorage.removeItem("access_token");
+
+  // Optionally, redirect to login page
+  window.location.href = "/login";
+}

@@ -3,6 +3,15 @@ from sqlalchemy.sql import func
 from .database import Base
 
 
+class User(Base):
+    __tablename__ = "users"
+
+    uid = Column(Integer, primary_key=True, index=True)
+    nom = Column(String, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    password = Column(String, nullable=False)
+    creation_date = Column(DateTime, default=func.now(), nullable=False)
+
 class Task(Base):
     __tablename__ = "tasks"
 

@@ -5,25 +5,27 @@ from sqlalchemy.orm import Session
 from datetime import datetime, date
 from pydantic import BaseModel
 from .models import Task
-from .database import SessionLocal
+from .database import get_db
 
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
 
-# session sql alchemy
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+
 
 # Modèle Pydantic pour valider les données JSON lors de la création d'une tâche
 class TaskCreate(BaseModel):
     title: str
     description: str = None
     due_date: str = None  # Date sous forme de chaîne
+
+
+
+
+
+
+
+
 
 
 # Route pour afficher la page login
