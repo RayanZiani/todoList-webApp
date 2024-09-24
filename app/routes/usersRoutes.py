@@ -49,19 +49,23 @@ def create_user(
 
 # User Login Route (returns JWT token)
 @router.post("/login")
-def login(
+async def login(
         email: str = Form(...),
         password: str = Form(...),
         db: Session = Depends(get_db)
 ):
+
     db_user = db.query(models.User).filter(models.User.email == email).first()
+
     if not db_user or not pwd_context.verify(password, db_user.password):
         raise HTTPException(status_code=400, detail="Invalid email or password")
 
-    access_token_expires = timedelta(minutes=30)
-    access_token = create_access_token(data={"sub": db_user.email}, expires_delta=access_token_expires)
+    # Ajout de journaux de débogage
+    print(f"Utilisateur trouvé: {db_user.nom}, ID: {db_user.uid}")  # Si ton ID est `id` et pas `uid`
 
-    # Return the token and token type
+    access_token_expires = timedelta(minutes=30)
+    access_token = create_access_token(data={"sub": str(db_user.uid)})
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 

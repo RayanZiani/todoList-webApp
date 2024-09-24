@@ -196,11 +196,18 @@
                     const taskId = this.closest("label").getAttribute("data-id");
                     const isChecked = this.checked;  // true if checked, false if unchecked
 
+                    const token = sessionStorage.getItem('authToken');
+                    if (!token) {
+                        alert("Vous devez être connecté pour créer une tâche.");
+                        return;
+                    }
+
                     // Send the updated completion status to the backend
                     fetch(`/api/tasks/${taskId}/complete`, {
                         method: "PUT",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
                         },
                         body: JSON.stringify({completed: isChecked})  // Wrap in an object with "completed" key
                     })
@@ -390,12 +397,18 @@
                     return;
                   }
 
+                  const token = sessionStorage.getItem('authToken');
+                  if (!token) {
+                      alert("Vous devez être connecté pour créer une tâche.");
+                      return;
+                  }
                   console.log(`Task ID: ${currentTaskId} - Delete button clicked`);
 
                   fetch(`/api/tasks/${currentTaskId}/delete`, {
                     method: "DELETE",
                     headers: {
-                      "Content-Type": "application/json"
+                      "Content-Type": "application/json",
+                      "Authorization": `Bearer ${token}`
                     }
                   })
                   .then(response => response.json())

@@ -20,12 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();  // Empêche le rechargement de la page
             const taskId = this.dataset.id;  // Récupère l'ID de la tâche via data-id
 
+            const token = sessionStorage.getItem('authToken');
+            if (!token) {
+                alert("Vous devez être connecté pour créer une tâche.");
+                return;
+            }
+
             console.log(`Task ID: ${taskId} - Delete button clicked`);
 
             fetch(`/api/tasks/${taskId}/delete`, {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": `Bearer ${token}`
                 }
             })
                 .then(response => response.json())
@@ -51,91 +58,103 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const taskForm = document.getElementById("taskForm");
     if (taskForm) {
-        taskForm.addEventListener("submit", function (event) {
-            event.preventDefault();  // Empêche le rechargement de la page
+    taskForm.addEventListener("submit", function (event) {
+        event.preventDefault();  // Empêche le rechargement de la page
 
-            // Récupérer les données du formulaire
-            const formData = new FormData(taskForm);
-            const title = formData.get("title");
-            const description = formData.get("description");
-            const due_date = formData.get("due_date");
+        // Récupérer les données du formulaire
+        const formData = new FormData(taskForm);
+        const title = formData.get("title");
+        const description = formData.get("description");
+        const due_date = formData.get("due_date");
 
-            // Créer l'objet de la tâche
-            const taskData = {
-                title: title,
-                description: description,
-                due_date: due_date
-            };
+        // Créer l'objet de la tâche
+        const taskData = {
+            title: title,
+            description: description,
+            due_date: due_date
+        };
 
-            console.log("Task data to be created:", taskData);
+        console.log("Task data to be created:", taskData);
 
-            // Envoyer les données en AJAX
-            fetch("/api/tasks/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(taskData)  // Envoyer l'objet JSON
-            })
-                .then(response => {
-                    console.log(response);
-                    if (response.ok) {
-                        return response.json();  // Traiter la réponse JSON
-                    } else {
-                        throw new Error("Erreur lors de la création de la tâche.");
-                    }
-                })
-                .then(data => {
-                    console.log(data)
-                    if (data.success) {
-                        // Ajouter la nouvelle tâche au DOM sans recharger la page
-                        const taskList = document.getElementById("taskList");
-                        const newTask = document.createElement("li");
-                        newTask.setAttribute("id", `task-${data.task.id}`);
-                        newTask.innerHTML = `
-                        <h3>${data.task.title}</h3>
-                        <p>${data.task.description}</p>
-                        <p><strong>Date d'échéance :</strong> ${data.task.due_date ? data.task.due_date : "Pas de date"}</p>
-                        <button type="button" class="deleteButton" data-id="${data.task.id}">Supprimer</button>
-                    `;
-                        taskList.appendChild(newTask);
+        const token = sessionStorage.getItem('authToken');
+        if (!token) {
+            alert("Vous devez être connecté pour créer une tâche.");
+            return;
+        }
 
-                        // Attacher l'événement de suppression au nouveau bouton créé
-                        newTask.querySelector(".deleteButton").addEventListener("click", function (event) {
-                            event.preventDefault();
-                            const taskId = this.dataset.id;
-                            fetch(`/tasks/${taskId}/delete`, {
-                                method: "DELETE",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        newTask.remove();
-                                    } else {
-                                        alert("Erreur lors de la suppression de la tâche.");
-                                    }
-                                })
-                                .catch(error => console.error("Erreur :", error));
-                        });
-
-                        // Réinitialiser le formulaire
-                        taskForm.reset();
-
-                        // Afficher un message de succès
-                        alert("Tâche créée avec succès !");
-                    } else {
-                        alert("Erreur lors de la création de la tâche.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Erreur :", error);
-                    alert("Une erreur est survenue lors de la création.");
+        // Envoyer les données en AJAX
+        fetch("/api/tasks/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(taskData)
+        })
+        .then(response => {
+            console.log("Response status:", response.status);  // Log du statut de la réponse
+            if (response.ok) {
+                return response.json();  // Traiter la réponse JSON
+            } else if (response.status === 500) {
+                // Si une erreur 500 est reçue, lire la réponse comme du texte pour afficher le message d'erreur
+                return response.text().then(errorText => {
+                    throw new Error(`Erreur du serveur : ${errorText}`);
                 });
+            } else {
+                return response.json().then(data => {
+                    throw new Error(data.message || "Erreur lors de la création de la tâche.");
+                });
+            }
+        })
+        .then(data => {
+            console.log("Response data:", data);
+            if (data.success) {
+                // Ajouter la nouvelle tâche au DOM sans recharger la page
+                const taskList = document.getElementById("taskList");
+                const newTask = document.createElement("li");
+                newTask.setAttribute("id", `task-${data.task.id}`);
+                newTask.innerHTML = `
+                    <h3>${data.task.title}</h3>
+                    <p>${data.task.description}</p>
+                    <p><strong>Date d'échéance :</strong> ${data.task.due_date ? data.task.due_date : "Pas de date"}</p>
+                    <button type="button" class="deleteButton" data-id="${data.task.id}">Supprimer</button>
+                `;
+                taskList.appendChild(newTask);
+
+                newTask.querySelector(".deleteButton").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const taskId = this.dataset.id;
+                    fetch(`/tasks/${taskId}/delete`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            newTask.remove();
+                        } else {
+                            alert("Erreur lors de la suppression de la tâche.");
+                        }
+                    })
+                    .catch(error => console.error("Erreur lors de la suppression :", error));
+                });
+
+                taskForm.reset();
+                alert("Tâche créée avec succès !");
+            } else {
+                alert("Erreur lors de la création de la tâche.");
+            }
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert(error.message || "Une erreur est survenue lors de la création.");
         });
-    }
+    });
+}
+
 
 });
 

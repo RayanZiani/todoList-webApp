@@ -9,10 +9,16 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30  # Token expiry time
 # Function to create a JWT token
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
+
+
     expire = datetime.utcnow() + expires_delta if expires_delta else datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
+
+
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
 
 # Function to verify the JWT token
 def verify_token(token: str):

@@ -74,33 +74,44 @@
 </div >
 
     <!-- ____________ JavaScript ____________ -->
-<script>
-  document.querySelector('#loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+    <script>
+        document.querySelector('#loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-    const email = document.querySelector('#email').value;
-    const password = document.querySelector('#password').value;
+            const email = document.querySelector('#email').value;
+            const password = document.querySelector('#password').value;
 
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({ email, password }),
-    });
+            // Log les valeurs pour s'assurer qu'elles sont correctes
+            console.log(`Email: ${email}, Password: ${password}`);
 
-   if (response.ok) {
-        const data = await response.json();
-        const token = data.access_token;
+            const response = await fetch('/api/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({ email, password }),  // Envoie les données sous forme de formulaire
+            });
 
-        sessionStorage.setItem('authToken', token);
+            // Vérification de la réponse
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.access_token;
 
-        window.location.href = '/';
-    } else {
-        alert("Login failed!");
-    }
-  });
-</script>
+                // Log le token pour s'assurer qu'il est bien récupéré
+                console.log(`Token reçu: ${token}`);
+
+                // Stocke le token dans le sessionStorage
+                sessionStorage.setItem('authToken', token);
+                console.log(response)
+                console.log(email, password)
+
+                // Redirige vers la page d'accueil après connexion
+                window.location.href = '/';
+            } else {
+                alert("Login failed!");  // Si la connexion échoue, afficher une alerte
+            }
+        });
+    </script>
     <script>
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
